@@ -16,7 +16,7 @@ const ManagerVehicle = async ({
 }) => {
   const { vehicleUuid } = await params;
   const [vehicle, clients] = await Promise.all([
-    getVehicle({ uuid: vehicleUuid }),
+    getVehicle({ where: { uuid: vehicleUuid } }),
     listClients(),
   ]);
 
