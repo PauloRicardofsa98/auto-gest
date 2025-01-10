@@ -97,7 +97,7 @@ export const scheduleColumns: ColumnDef<ScheduleAll>[] = [
     cell: ({ row: { original: schedule } }) => (
       <DataTableColumnContent
         align="start"
-        className={`${schedule.status === ScheduleStatus.CANCELED && "text-red-500 line-through"}`}
+        className={`${schedule.status === ScheduleStatus.CANCELED && "text-red-500 line-through"} max-w-64`}
       >
         {schedule.service.name}
       </DataTableColumnContent>
