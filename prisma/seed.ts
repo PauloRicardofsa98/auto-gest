@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Prisma, PrismaClient, ScheduleStatus } from "@prisma/client";
 import { faker } from "@faker-js/faker";
 
@@ -199,14 +200,14 @@ const generateSchedules = async () => {
 
 async function main() {
   console.log("Start seeding...");
-  await generateClients();
-  await generateCategoryProducts();
-  await generateProducts();
-  await generateSuppliers();
-  await generateServices();
-  await generateVehicles();
-  await generateEmployers();
-  await generateSchedules();
+  // await generateClients();
+  // await generateCategoryProducts();
+  // await generateProducts();
+  // await generateSuppliers();
+  // await generateServices();
+  // await generateVehicles();
+  // await generateEmployers();
+  // await generateSchedules();
   console.log("Seeding finished.");
 }
 
