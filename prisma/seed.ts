@@ -188,7 +188,10 @@ const generateSchedules = async () => {
         vehicleUuid: vehicles[randomVehicle].uuid,
         status: statusSelected,
         dataSaid: statusSelected === "DONE" ? faker.date.recent() : null,
-        createdAt: faker.date.recent(),
+        createdAt: faker.date.recent({
+          days: 10,
+          refDate: "2025-03-01T00:00:00.000Z",
+        }),
       };
     },
   );
@@ -207,7 +210,7 @@ async function main() {
   // await generateServices();
   // await generateVehicles();
   // await generateEmployers();
-  // await generateSchedules();
+  await generateSchedules();
   console.log("Seeding finished.");
 }
 

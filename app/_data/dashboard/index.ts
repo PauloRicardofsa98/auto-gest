@@ -108,13 +108,15 @@ export const getOverview = async () => {
         },
       });
 
-      const total = schedules.reduce((sum, schedule) => {
-        return sum + (Number(schedule.service?.price) || 0);
-      }, 0);
+      const total = schedules
+        .reduce((sum, schedule) => {
+          return sum + (Number(schedule.service?.price) || 0);
+        }, 0)
+        .toFixed(2);
 
       return {
         month: monthNames[index],
-        total,
+        total: Number(total),
       };
     }),
   );
