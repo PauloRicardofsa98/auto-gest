@@ -15,6 +15,8 @@ import {
 } from "lucide-react";
 import { currencyFormat } from "@/app/_utils/helper";
 
+export const dynamic = "force-dynamic";
+
 const DashboardPage = async () => {
   const {
     currentMonthRevenue,
