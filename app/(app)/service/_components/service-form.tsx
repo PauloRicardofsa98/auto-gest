@@ -1,18 +1,21 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { Button } from "@/app/_components/ui/button";
-import { Form } from "@/app/_components/ui/form";
+import { Service } from "@prisma/client";
 import { Plus, Upload } from "lucide-react";
 import { useRouter } from "next/navigation";
-import usePromiseToast from "@/app/_hooks/toast-promise";
-import { createService } from "../_actions/create-service";
-import { updateService } from "../_actions/update-service";
-import { Service } from "@prisma/client";
-import { ServiceProps, serviceSchema } from "../_actions/service-schema";
+import { useForm } from "react-hook-form";
+
 import { InputField } from "@/app/_components/inputs/input-field";
 import { InputPrice } from "@/app/_components/inputs/price";
+import { Button } from "@/app/_components/ui/button";
+import { Form } from "@/app/_components/ui/form";
+import usePromiseToast from "@/app/_hooks/toast-promise";
+import { doubleFormat } from "@/app/_utils/helper";
+
+import { createService } from "../_actions/create-service";
+import { ServiceProps, serviceSchema } from "../_actions/service-schema";
+import { updateService } from "../_actions/update-service";
 
 interface FormProps {
   service?: Service;
@@ -33,7 +36,7 @@ export const FormService = ({ service }: FormProps) => {
   async function onSubmit(data: ServiceProps) {
     const dataFormatted = {
       name: data.name,
-      price: Number(data.price.replace("R$", "").replace(",", ".")),
+      price: doubleFormat(data.price),
     };
 
     if (service) {

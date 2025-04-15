@@ -1,4 +1,3 @@
-import { getService } from "@/app/_data/service";
 import {
   Card,
   CardContent,
@@ -6,6 +5,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/app/_components/ui/card";
+import { getService } from "@/app/_data/service";
+
 import { FormService } from "../../service/_components/service-form";
 
 const ManagerService = async ({

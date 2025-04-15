@@ -41,3 +41,16 @@ export const currencyFormat = (value: number): string => {
     currency: "BRL",
   });
 };
+
+export const doubleFormat = (value: string): number => {
+  if (!value) return 0;
+  const cleanedValue = value
+    .replace("R$", "")
+    .replace(/\./g, "")
+    .replace(",", ".")
+    .trim();
+
+  const decimalValue = parseFloat(cleanedValue);
+
+  return parseFloat(decimalValue.toFixed(2));
+};
