@@ -1,5 +1,17 @@
 "use client";
 
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Brand, Client, Service } from "@prisma/client";
+import { PlusIcon } from "lucide-react";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+
+import { ComboboxInput } from "@/app/_components/inputs/combobox-input";
+import { InputDate } from "@/app/_components/inputs/input-date";
+import { InputField } from "@/app/_components/inputs/input-field";
+import { Button } from "@/app/_components/ui/button";
+import { Form } from "@/app/_components/ui/form";
 import {
   Sheet,
   SheetContent,
@@ -7,19 +19,10 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/app/_components/ui/sheet";
-import { Brand, Client, Service } from "@prisma/client";
-import { Button } from "@/app/_components/ui/button";
-import { useEffect, useState } from "react";
-import usePromiseToast from "@/app/_hooks/toast-promise";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Form } from "@/app/_components/ui/form";
-import { PlusIcon } from "lucide-react";
-import { ScheduleProps, scheduleSchema } from "../_actions/schedule-schema";
-import { createSchedule } from "../_actions/create-schedule";
-import { InputField } from "@/app/_components/inputs/input-field";
-import { ComboboxInput } from "@/app/_components/inputs/combobox-input";
 import { getVehicle } from "@/app/_data/vehicle";
+
+import { createSchedule } from "../_actions/create-schedule";
+import { ScheduleProps, scheduleSchema } from "../_actions/schedule-schema";
 
 interface ManagerScheduleProps {
   clients: Client[];
@@ -27,7 +30,6 @@ interface ManagerScheduleProps {
 }
 const ManagerSchedule = ({ clients, services }: ManagerScheduleProps) => {
   const [open, setOpen] = useState(false);
-  const toastPromise = usePromiseToast();
 
   const form = useForm<ScheduleProps>({
     resolver: zodResolver(scheduleSchema),
@@ -38,6 +40,7 @@ const ManagerSchedule = ({ clients, services }: ManagerScheduleProps) => {
       model: "",
       plate: "",
       year: undefined,
+      date: new Date(),
     },
   });
 
@@ -46,14 +49,19 @@ const ManagerSchedule = ({ clients, services }: ManagerScheduleProps) => {
   }, [form, open]);
 
   async function onSubmit(data: ScheduleProps) {
-    const create = createSchedule(data).then((response) => {
-      if (typeof response !== "string") {
+    const promise = createSchedule(data);
+    toast.promise(promise, {
+      loading: "Criando agendamento...",
+      success: (response) => {
+        if (typeof response === "string") {
+          throw new Error(response);
+        }
         form.reset();
         setOpen(false);
-      }
-      return response;
+        return "Agendamento criado com sucesso!";
+      },
+      error: (error) => error.message,
     });
-    toastPromise.promise(create, "create");
   }
 
   const handleBlurPlate = async () => {
@@ -87,6 +95,11 @@ const ManagerSchedule = ({ clients, services }: ManagerScheduleProps) => {
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <div className="grid grid-cols-1 gap-4">
+              <InputDate
+                control={form.control}
+                name="date"
+                description="Data"
+              />
               <InputField
                 control={form.control}
                 name="plate"

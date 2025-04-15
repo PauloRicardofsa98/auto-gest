@@ -5,13 +5,14 @@ import {
   CardHeader,
   CardTitle,
 } from "@/app/_components/ui/card";
-import { scheduleColumns } from "./_components/schedule-columns";
-import ManagerProductSupplier from "./_components/manager-schedule";
-import { listSchedules } from "@/app/_data/schedule";
 import { listClients } from "@/app/_data/client";
+import { listSchedules } from "@/app/_data/schedule";
 import { listServices } from "@/app/_data/service";
-import HeaderSchedule from "./_components/header-schedule";
 import { getPeriod } from "@/app/_utils/helper";
+
+import HeaderSchedule from "./_components/header-schedule";
+import ManagerSchedule from "./_components/manager-schedule";
+import { scheduleColumns } from "./_components/schedule-columns";
 
 const SchedulePage = async ({
   searchParams,
@@ -47,7 +48,7 @@ const SchedulePage = async ({
         <div>
           <CardTitle>Agendamentos</CardTitle>
         </div>
-        <ManagerProductSupplier clients={clients} services={services} />
+        <ManagerSchedule clients={clients} services={services} />
       </CardHeader>
 
       <CardContent>

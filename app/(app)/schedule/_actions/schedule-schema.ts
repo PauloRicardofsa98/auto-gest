@@ -31,6 +31,9 @@ export const scheduleSchema = z.object({
       required_error: "O serviço é obrigatório",
     })
     .min(1, "Este campo é obrigatório"),
+  date: z.date({
+    required_error: "A data é obrigatória",
+  }),
 });
 
 export type ScheduleProps = z.infer<typeof scheduleSchema>;

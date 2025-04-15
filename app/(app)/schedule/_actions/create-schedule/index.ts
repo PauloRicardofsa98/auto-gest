@@ -1,8 +1,10 @@
 "use server";
+import { auth } from "@clerk/nextjs/server";
 import { Schedule } from "@prisma/client";
 import { revalidatePath } from "next/cache";
+
 import { db } from "@/app/_lib/prisma";
-import { auth } from "@clerk/nextjs/server";
+
 import { ScheduleProps } from "../schedule-schema";
 
 export const createSchedule = async (
@@ -39,6 +41,7 @@ export const createSchedule = async (
         clientUuid: scheduleParams.clientUuid,
         vehicleUuid: vehicle.uuid,
         serviceUuid: scheduleParams.serviceUuid,
+        date: scheduleParams.date,
       },
     });
     revalidatePath(`/schedule`);

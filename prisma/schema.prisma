@@ -121,6 +121,7 @@ model Schedule {
   uuid         String         @id @default(uuid())
   serviceUuid  String
   status       ScheduleStatus
+  date         DateTime       @default(now())
   notes        String?
   clientUuid   String
   vehicleUuid  String

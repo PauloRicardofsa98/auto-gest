@@ -1,10 +1,12 @@
 "use client";
-import { ColumnDef } from "@tanstack/react-table";
 import { Prisma, ScheduleStatus } from "@prisma/client";
-import { DataTableColumnHeader } from "@/app/_components/table/data-table-column-header";
+import { ColumnDef } from "@tanstack/react-table";
+
 import { DataTableColumnContent } from "@/app/_components/table/data-table-column-content";
-import { ScheduleRowActions } from "./schedule-row-actions";
+import { DataTableColumnHeader } from "@/app/_components/table/data-table-column-header";
 import { Badge } from "@/app/_components/ui/badge";
+
+import { ScheduleRowActions } from "./schedule-row-actions";
 
 type ScheduleAll = Prisma.ScheduleGetPayload<{
   include: {
@@ -32,18 +34,32 @@ export const scheduleColumns: ColumnDef<ScheduleAll>[] = [
     accessorKey: "createdAt",
 
     header: ({ column }) => (
-      <DataTableColumnHeader
-        column={column}
-        title="Agendado em"
-        align="start"
-      />
+      <DataTableColumnHeader column={column} title="Criado em" align="start" />
     ),
     cell: ({ row: { original: schedule } }) => (
       <DataTableColumnContent
         align="start"
         className={`${schedule.status === ScheduleStatus.CANCELED && "text-red-500 line-through"}`}
       >
-        {new Date(schedule.createdAt).toLocaleString("pt-BR")}
+        {new Date(schedule.createdAt).toLocaleString("pt-BR", {
+          timeZone: "America/Sao_Paulo",
+        })}
+      </DataTableColumnContent>
+    ),
+  },
+  {
+    accessorKey: "date",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Data" align="start" />
+    ),
+    cell: ({ row: { original: schedule } }) => (
+      <DataTableColumnContent
+        align="start"
+        className={`${schedule.status === ScheduleStatus.CANCELED && "text-red-500 line-through"}`}
+      >
+        {new Date(schedule.date).toLocaleDateString("pt-BR", {
+          timeZone: "America/Sao_Paulo",
+        })}
       </DataTableColumnContent>
     ),
   },
