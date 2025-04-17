@@ -1,3 +1,4 @@
+import { type ClassValue, clsx } from "clsx";
 import {
   endOfDay,
   endOfMonth,
@@ -10,6 +11,11 @@ import {
   subWeeks,
 } from "date-fns";
 import { DateRange } from "react-day-picker";
+import { twMerge } from "tailwind-merge";
+
+export const cn = (...inputs: ClassValue[]) => {
+  return twMerge(clsx(inputs));
+};
 
 export const getPeriod = (period: string) => {
   try {
