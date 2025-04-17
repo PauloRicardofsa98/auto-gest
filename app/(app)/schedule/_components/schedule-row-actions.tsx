@@ -1,10 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import usePromiseToast from "@/app/_hooks/toast-promise";
 import { Employer, Prisma, ScheduleStatus } from "@prisma/client";
-import { Button } from "@/app/_components/ui/button";
-import { updateSchedule } from "../_actions/update-schedule";
+import { Check, ChevronsUpDown } from "lucide-react";
+import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
+
 import {
   AlertDialog,
   AlertDialogContent,
@@ -12,11 +12,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/app/_components/ui/alert-dialog";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/app/_components/ui/popover";
+import { Button } from "@/app/_components/ui/button";
 import {
   Command,
   CommandEmpty,
@@ -24,10 +20,16 @@ import {
   CommandInput,
   CommandItem,
 } from "@/app/_components/ui/command";
-import { cn } from "@/app/_lib/utils";
-import { ChevronsUpDown, Check } from "lucide-react";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/app/_components/ui/popover";
 import { listEmployers } from "@/app/_data/employer";
-import { toast } from "react-toastify";
+import usePromiseToast from "@/app/_hooks/toast-promise";
+import { cn } from "@/app/_lib/utils";
+
+import { updateSchedule } from "../_actions/update-schedule";
 
 type ScheduleAll = Prisma.ScheduleGetPayload<{
   include: {
@@ -149,9 +151,12 @@ export function ScheduleRowActions({ schedule }: ScheduleRowActionProps) {
       <div className="flex items-center space-x-2">
         {schedule.status === "PENDING" && (
           <>
-            <Button onClick={toggleCheckout}>Saida</Button>
+            <Button onClick={toggleCheckout} size="sm">
+              Saida
+            </Button>
             <Button
               variant={"destructive"}
+              size="sm"
               onClick={() => handleUpdateScheduleStatus("CANCELED")}
             >
               Cancelar
