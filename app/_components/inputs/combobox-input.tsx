@@ -1,6 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
+import { Check, ChevronsUpDown } from "lucide-react";
+import { useState } from "react";
+import { Control, FieldValues, Path } from "react-hook-form";
+
 import { cn } from "@/app/_lib/utils";
+
+import { Button } from "../ui/button";
 import {
   Command,
   CommandEmpty,
@@ -15,10 +20,7 @@ import {
   FormLabel,
   FormMessage,
 } from "../ui/form";
-import { Button } from "../ui/button";
-import { Check, ChevronsUpDown } from "lucide-react";
-import { useState } from "react";
-import { Control, FieldValues, Path } from "react-hook-form";
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 
 interface InputProps<T extends FieldValues> {
   control: Control<T>;
@@ -45,7 +47,7 @@ export const ComboboxInput = <T extends FieldValues>({
       control={control}
       name={name}
       render={({ field }) => (
-        <FormItem className={cn("flex flex-col", className)}>
+        <FormItem className={cn("flex flex-col py-2.5", className)}>
           <FormLabel>{description}</FormLabel>
           <Popover open={open} onOpenChange={setOpen}>
             <PopoverTrigger asChild>

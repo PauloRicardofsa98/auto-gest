@@ -1,7 +1,8 @@
 "use client";
 
 import { Employer, Prisma, ScheduleStatus } from "@prisma/client";
-import { Check, ChevronsUpDown } from "lucide-react";
+import { Check, ChevronsUpDown, PencilIcon } from "lucide-react";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
@@ -35,7 +36,11 @@ type ScheduleAll = Prisma.ScheduleGetPayload<{
   include: {
     client: true;
     vehicle: true;
-    service: true;
+    scheduleServices: {
+      include: {
+        service: true;
+      };
+    };
   };
 }>;
 
@@ -77,11 +82,7 @@ export function ScheduleRowActions({ schedule }: ScheduleRowActionProps) {
 
     const updateProductPromise = updateSchedule(schedule.uuid, {
       status: "DONE",
-      employer: {
-        connect: {
-          uuid: selectedEmployer.uuid,
-        },
-      },
+      employerUuid: selectedEmployer.uuid,
     });
     toastPromise.promise(updateProductPromise, "update");
     setOpenCheckout(false);
@@ -163,6 +164,11 @@ export function ScheduleRowActions({ schedule }: ScheduleRowActionProps) {
             </Button>
           </>
         )}
+        <Button size="icon" variant="outline">
+          <Link href={`/schedule/${schedule.uuid}`}>
+            <PencilIcon />
+          </Link>
+        </Button>
       </div>
     </>
   );

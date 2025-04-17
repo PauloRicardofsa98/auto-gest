@@ -1,12 +1,17 @@
-import { listSchedules } from "@/app/_data/schedule";
-import { currencyFormat } from "@/app/_utils/helper";
 import { Prisma, ScheduleStatus } from "@prisma/client";
 import { CircleIcon } from "lucide-react";
+
+import { listSchedules } from "@/app/_data/schedule";
+import { currencyFormat } from "@/app/_utils/helper";
 
 type ScheduleAll = Prisma.ScheduleGetPayload<{
   include: {
     client: true;
-    service: true;
+    scheduleServices: {
+      include: {
+        service: true;
+      };
+    };
     vehicle: true;
   };
 }>;
@@ -44,7 +49,11 @@ const RecentSchedules = async () => {
   const recentSchedules = (await listSchedules({
     include: {
       client: true,
-      service: true,
+      scheduleServices: {
+        include: {
+          service: true,
+        },
+      },
       vehicle: true,
     },
     take: 5,
@@ -62,12 +71,19 @@ const RecentSchedules = async () => {
                 {schedule.vehicle.color}
               </p>
             </div>
-            <p className="text-sm text-muted-foreground">
-              {schedule.service.name}
+            <p className="truncate text-sm text-muted-foreground">
+              {schedule.scheduleServices.map((service) => service.service.name)}
             </p>
           </div>
           <div className="ml-auto font-medium">
-            {currencyFormat(Number(schedule.service.price))}
+            {currencyFormat(
+              Number(
+                schedule.scheduleServices.reduce(
+                  (acc, service) => acc + Number(service.value),
+                  0,
+                ),
+              ),
+            )}
           </div>
         </div>
       ))}

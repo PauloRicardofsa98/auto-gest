@@ -40,8 +40,13 @@ export const createSchedule = async (
         status: "PENDING",
         clientUuid: scheduleParams.clientUuid,
         vehicleUuid: vehicle.uuid,
-        serviceUuid: scheduleParams.serviceUuid,
         date: scheduleParams.date,
+        scheduleServices: {
+          create: scheduleParams.services?.map((service) => ({
+            serviceUuid: service.serviceUuid,
+            value: service.value,
+          })),
+        },
       },
     });
     revalidatePath(`/schedule`);

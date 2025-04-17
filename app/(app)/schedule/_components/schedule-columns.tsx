@@ -1,18 +1,30 @@
 "use client";
-import { Prisma, ScheduleStatus } from "@prisma/client";
+import { Prisma, ScheduleService, ScheduleStatus } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
+import { Microscope } from "lucide-react";
 
 import { DataTableColumnContent } from "@/app/_components/table/data-table-column-content";
 import { DataTableColumnHeader } from "@/app/_components/table/data-table-column-header";
 import { Badge } from "@/app/_components/ui/badge";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/app/_components/ui/tooltip";
+import { currencyFormat } from "@/app/_utils/helper";
 
 import { ScheduleRowActions } from "./schedule-row-actions";
 
 type ScheduleAll = Prisma.ScheduleGetPayload<{
   include: {
     client: true;
-    service: true;
     vehicle: true;
+    scheduleServices: {
+      include: {
+        service: true;
+      };
+    };
   };
 }>;
 
@@ -110,20 +122,6 @@ export const scheduleColumns: ColumnDef<ScheduleAll>[] = [
     ),
   },
   {
-    accessorKey: "service",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Serviço" align="start" />
-    ),
-    cell: ({ row: { original: schedule } }) => (
-      <DataTableColumnContent
-        align="start"
-        className={`${schedule.status === ScheduleStatus.CANCELED && "text-red-500 line-through"} max-w-64`}
-      >
-        {schedule.service.name}
-      </DataTableColumnContent>
-    ),
-  },
-  {
     accessorKey: "client",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Cliente" align="start" />
@@ -136,6 +134,73 @@ export const scheduleColumns: ColumnDef<ScheduleAll>[] = [
         {schedule.client.name}
       </DataTableColumnContent>
     ),
+  },
+  {
+    accessorKey: "procedures",
+    enableSorting: false,
+    header: ({ column }) => (
+      <DataTableColumnHeader
+        className="justify-center"
+        column={column}
+        title="Procedimentos"
+      />
+    ),
+    cell: ({ row }) => {
+      return (
+        <DataTableColumnContent>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger>
+                <Microscope />
+              </TooltipTrigger>
+              <TooltipContent>
+                <div className="flex flex-col">
+                  {row.original.scheduleServices.length > 0 ? (
+                    row.original.scheduleServices.map((service, index) => {
+                      return (
+                        <div className="flex gap-2" key={index}>
+                          <span>
+                            <b>Procedimento:</b> {service.service.name}
+                          </span>
+                          <span>
+                            <b>Valor cliente:</b>{" "}
+                            {currencyFormat(Number(service.value))}
+                          </span>
+                        </div>
+                      );
+                    })
+                  ) : (
+                    <span className="flex gap-2 hover:cursor-pointer">
+                      Nenhum procedimento cadastrado
+                    </span>
+                  )}
+                </div>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        </DataTableColumnContent>
+      );
+    },
+  },
+  {
+    accessorKey: "value",
+    enableSorting: false,
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title={"Valor do agendamento"} />
+    ),
+    cell: ({ row }) => {
+      const valueBudget = (procedures: ScheduleService[]) => {
+        return procedures.reduce((accumulator, budgetProcedures) => {
+          return accumulator + Number(budgetProcedures.value);
+        }, 0);
+      };
+
+      return (
+        <DataTableColumnContent>
+          {currencyFormat(valueBudget(row.original.scheduleServices))}
+        </DataTableColumnContent>
+      );
+    },
   },
   {
     accessorKey: "status",

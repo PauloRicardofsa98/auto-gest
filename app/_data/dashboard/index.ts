@@ -24,13 +24,21 @@ export const getOverview = async () => {
       status: "DONE",
     },
     include: {
-      service: true,
+      scheduleServices: true,
     },
   });
 
   const currentMonthRevenue = currentMonthSchedules.reduce(
     (total, schedule) => {
-      return total + (Number(schedule.service?.price) || 0);
+      return (
+        total +
+        (Number(
+          schedule.scheduleServices.reduce(
+            (acc, service) => acc + Number(service.value),
+            0,
+          ),
+        ) || 0)
+      );
     },
     0,
   );
@@ -45,12 +53,20 @@ export const getOverview = async () => {
       status: "DONE",
     },
     include: {
-      service: true,
+      scheduleServices: true,
     },
   });
 
   const lastMonthRevenue = lastMonthSchedules.reduce((total, schedule) => {
-    return total + (Number(schedule.service?.price) || 0);
+    return (
+      total +
+      (Number(
+        schedule.scheduleServices.reduce(
+          (acc, service) => acc + Number(service.value),
+          0,
+        ),
+      ) || 0)
+    );
   }, 0);
 
   // Diferença de faturamento entre meses
@@ -104,16 +120,23 @@ export const getOverview = async () => {
           status: "DONE",
         },
         include: {
-          service: true, // Inclui os dados do serviço relacionado
+          scheduleServices: true,
         },
       });
 
       const total = schedules
         .reduce((sum, schedule) => {
-          return sum + (Number(schedule.service?.price) || 0);
+          return (
+            sum +
+            (Number(
+              schedule.scheduleServices.reduce(
+                (acc, service) => acc + Number(service.value),
+                0,
+              ),
+            ) || 0)
+          );
         }, 0)
         .toFixed(2);
-
       return {
         month: monthNames[index],
         total: Number(total),

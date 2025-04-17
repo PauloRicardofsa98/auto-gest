@@ -18,8 +18,8 @@ model Client {
   observations String?
   createdAt    DateTime   @default(now())
   updatedAt    DateTime   @updatedAt
-  Vehicle      Vehicle[]
-  Schedule     Schedule[]
+  vehicles     Vehicle[]
+  schedules    Schedule[]
 }
 
 model CategoryProduct {
@@ -79,13 +79,13 @@ model Supplier {
 }
 
 model Service {
-  id        Int        @default(autoincrement())
-  uuid      String     @id @default(uuid())
-  name      String
-  price     Decimal    @db.Decimal(10, 2)
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
-  Schedule  Schedule[]
+  id               Int               @default(autoincrement())
+  uuid             String            @id @default(uuid())
+  name             String
+  price            Decimal           @db.Decimal(10, 2)
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  scheduleServices ScheduleService[]
 }
 
 model Vehicle {
@@ -117,22 +117,31 @@ model Employer {
 }
 
 model Schedule {
-  id           Int            @default(autoincrement())
-  uuid         String         @id @default(uuid())
+  id               Int               @default(autoincrement())
+  uuid             String            @id @default(uuid())
+  status           ScheduleStatus
+  date             DateTime          @default(now())
+  notes            String?
+  clientUuid       String
+  vehicleUuid      String
+  employerUuid     String?
+  client           Client            @relation(fields: [clientUuid], references: [uuid])
+  vehicle          Vehicle           @relation(fields: [vehicleUuid], references: [uuid])
+  employer         Employer?         @relation(fields: [employerUuid], references: [uuid])
+  dataSaid         DateTime?
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  scheduleServices ScheduleService[]
+}
+
+model ScheduleService {
+  id           Int      @default(autoincrement())
+  uuid         String   @id @default(uuid())
+  scheduleUuid String
   serviceUuid  String
-  status       ScheduleStatus
-  date         DateTime       @default(now())
-  notes        String?
-  clientUuid   String
-  vehicleUuid  String
-  employerUuid String?
-  service      Service        @relation(fields: [serviceUuid], references: [uuid])
-  client       Client         @relation(fields: [clientUuid], references: [uuid])
-  vehicle      Vehicle        @relation(fields: [vehicleUuid], references: [uuid])
-  employer     Employer?      @relation(fields: [employerUuid], references: [uuid])
-  dataSaid     DateTime?
-  createdAt    DateTime       @default(now())
-  updatedAt    DateTime       @updatedAt
+  value        Decimal  @db.Decimal(10, 2)
+  service      Service  @relation(fields: [serviceUuid], references: [uuid])
+  schedule     Schedule @relation(fields: [scheduleUuid], references: [uuid])
 }
 
 enum Unit {

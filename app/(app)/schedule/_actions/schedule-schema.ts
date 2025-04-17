@@ -1,4 +1,4 @@
-import { Brand } from "@prisma/client";
+import { Brand, ScheduleStatus } from "@prisma/client";
 import { z } from "zod";
 
 export const scheduleSchema = z.object({
@@ -26,14 +26,22 @@ export const scheduleSchema = z.object({
     })
     .optional(),
   clientUuid: z.string(),
-  serviceUuid: z
-    .string({
-      required_error: "O serviço é obrigatório",
-    })
-    .min(1, "Este campo é obrigatório"),
+  services: z
+    .array(
+      z.object({
+        serviceUuid: z.string(),
+        value: z.number(),
+      }),
+    )
+    .optional(),
+  status: z.nativeEnum(ScheduleStatus).optional(),
+  employerUuid: z.string().optional(),
   date: z.date({
     required_error: "A data é obrigatória",
   }),
 });
 
+export const updateScheduleSchema = scheduleSchema.partial();
+
 export type ScheduleProps = z.infer<typeof scheduleSchema>;
+export type UpdateScheduleProps = z.infer<typeof updateScheduleSchema>;

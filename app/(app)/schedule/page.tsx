@@ -1,3 +1,6 @@
+import Link from "next/link";
+
+import { Button } from "@/app/_components/ui/button";
 import {
   Card,
   CardContent,
@@ -8,7 +11,6 @@ import { listClients } from "@/app/_data/client";
 import { listServices } from "@/app/_data/service";
 import { getPeriod } from "@/app/_utils/helper";
 
-import ManagerSchedule from "./_components/manager-schedule";
 import ScheduleCore from "./_components/schedule-core";
 
 const SchedulePage = async ({
@@ -31,7 +33,10 @@ const SchedulePage = async ({
         <div>
           <CardTitle>Agendamentos</CardTitle>
         </div>
-        <ManagerSchedule clients={clients} services={services} />
+        {/* <ManagerSchedule clients={clients} services={services} /> */}
+        <Button asChild>
+          <Link href="/schedule/new">Novo Agendamento</Link>
+        </Button>
       </CardHeader>
 
       <CardContent>

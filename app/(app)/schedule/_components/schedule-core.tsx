@@ -32,7 +32,11 @@ const ScheduleCore = ({ clients, services }: ScheduleCoreProps) => {
         where: filter,
         include: {
           client: true,
-          service: true,
+          scheduleServices: {
+            include: {
+              service: true,
+            },
+          },
           vehicle: true,
           employer: true,
         },

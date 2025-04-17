@@ -36,7 +36,7 @@ export const InputDate = <T extends FieldValues>({
       control={control}
       name={name}
       render={({ field }) => (
-        <FormItem className={cn("flex flex-col", className)}>
+        <FormItem className={cn("flex flex-col py-2.5", className)}>
           <FormLabel>{description}</FormLabel>
           <Popover>
             <PopoverTrigger asChild>
