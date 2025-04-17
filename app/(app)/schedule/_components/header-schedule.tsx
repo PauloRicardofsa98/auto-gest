@@ -57,7 +57,7 @@ const HeaderSchedule = ({
   const [serviceFilter, setServiceFilter] = useState<string[]>([]);
 
   const [dateRangeFilter, setDateRange] = useState<DateRange | undefined>();
-  const [dateFilter, setDateFilter] = useState<FilterPeriod>("CURRENT_DAY");
+  const [dateFilter, setDateFilter] = useState<FilterPeriod>("CURRENT_WEEK");
 
   const [dateFilterType, setDateFilterType] = useState<
     "APPOINTMENT" | "CREATED"

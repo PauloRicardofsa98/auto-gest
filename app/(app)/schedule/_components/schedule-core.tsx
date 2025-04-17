@@ -4,6 +4,7 @@ import { Client, Prisma, Schedule, Service } from "@prisma/client";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
+import Loading from "@/app/_components/loading";
 import { DataTable } from "@/app/_components/table/dataTable";
 import { listSchedules } from "@/app/_data/schedule";
 
@@ -16,6 +17,7 @@ interface ScheduleCoreProps {
 }
 
 const ScheduleCore = ({ clients, services }: ScheduleCoreProps) => {
+  const [isLoading, setIsLoading] = useState(false);
   const [schedules, setSchedules] = useState<Schedule[]>([]);
   const [filter, setFilter] = useState<Prisma.ScheduleWhereInput | undefined>();
 
@@ -25,6 +27,7 @@ const ScheduleCore = ({ clients, services }: ScheduleCoreProps) => {
 
   useEffect(() => {
     const updateSchedules = async () => {
+      setIsLoading(true);
       const promise = listSchedules({
         where: filter,
         include: {
@@ -41,6 +44,7 @@ const ScheduleCore = ({ clients, services }: ScheduleCoreProps) => {
           return "Agendamentos carregados com sucesso!";
         },
         error: (error) => error.message,
+        finally: () => setIsLoading(false),
       });
     };
     updateSchedules();
@@ -53,11 +57,16 @@ const ScheduleCore = ({ clients, services }: ScheduleCoreProps) => {
         services={services}
         handleUpdateFilter={handleUpdateFilter}
       />
-
-      <DataTable
-        columns={scheduleColumns}
-        data={JSON.parse(JSON.stringify(schedules))}
-      />
+      {isLoading ? (
+        <div className="absolute inset-0 flex items-center justify-center bg-black/20">
+          <Loading />
+        </div>
+      ) : (
+        <DataTable
+          columns={scheduleColumns}
+          data={JSON.parse(JSON.stringify(schedules))}
+        />
+      )}
     </div>
   );
 };
