@@ -47,3 +47,5 @@ export const AlertDelete = ({
     </AlertDialog>
   );
 };
+
+export default AlertDelete;

@@ -1,4 +1,3 @@
-import * as React from "react";
 import {
   CalendarDaysIcon,
   CarIcon,
@@ -11,6 +10,8 @@ import {
   UserIcon,
   Users2Icon,
 } from "lucide-react";
+import Image from "next/image";
+import * as React from "react";
 
 import {
   Sidebar,
@@ -25,7 +26,6 @@ import {
   SidebarMenuSubItem,
   SidebarRail,
 } from "@/app/_components/ui/sidebar";
-import Image from "next/image";
 
 type NavMain = {
   title: string;
@@ -165,3 +165,5 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     </Sidebar>
   );
 }
+
+export default AppSidebar;
