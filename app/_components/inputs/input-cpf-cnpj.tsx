@@ -49,3 +49,5 @@ export const InputCpfCnpj = <T extends FieldValues>({
     />
   );
 };
+
+export default InputCpfCnpj;

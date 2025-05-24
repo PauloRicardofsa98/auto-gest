@@ -1,5 +1,15 @@
 "use client";
 
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Prisma, Product, ProductSupplier, Supplier } from "@prisma/client";
+import { PlusIcon, UploadIcon } from "lucide-react";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+
+import { ComboboxInput } from "@/app/_components/inputs/input-combobox";
+import { InputPrice } from "@/app/_components/inputs/input-price";
+import { Button } from "@/app/_components/ui/button";
+import { Form } from "@/app/_components/ui/form";
 import {
   Sheet,
   SheetContent,
@@ -7,23 +17,15 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/app/_components/ui/sheet";
-import { Prisma, Product, ProductSupplier, Supplier } from "@prisma/client";
-import { Button } from "@/app/_components/ui/button";
-import { useEffect, useState } from "react";
+import { listSuppliers } from "@/app/_data/supplier";
 import usePromiseToast from "@/app/_hooks/toast-promise";
-import { useForm } from "react-hook-form";
+
+import { createProductSupplier } from "../_actions/create-product-supplier";
 import {
   ProductSupplierProps,
   productSupplierSchema,
 } from "../_actions/product-supplier-schema";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { updateProductSupplier } from "../_actions/update-product-supplier";
-import { createProductSupplier } from "../_actions/create-product-supplier";
-import { Form } from "@/app/_components/ui/form";
-import { ComboboxInput } from "@/app/_components/inputs/combobox-input";
-import { InputPrice } from "@/app/_components/inputs/price";
-import { PlusIcon, UploadIcon } from "lucide-react";
-import { listSuppliers } from "@/app/_data/supplier";
 
 interface ManagerProductSupplierProps {
   product: Product;

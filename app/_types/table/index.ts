@@ -23,5 +23,4 @@ export type TableProps = {
   columns: any;
   filterInput?: FilterInput;
   filters?: FiltersTable[];
-  pageFilterPeriod?: string;
 };

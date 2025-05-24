@@ -1,16 +1,18 @@
 "use client";
-import * as React from "react";
 import {
   ColumnFiltersState,
-  SortingState,
-  VisibilityState,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
+  SortingState,
   useReactTable,
+  VisibilityState,
 } from "@tanstack/react-table";
+import { X } from "lucide-react";
+import * as React from "react";
+import { useEffect, useState } from "react";
 
 import {
   Table,
@@ -20,13 +22,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/app/_components/ui/table";
-import { useEffect, useState } from "react";
-import { DataTableFilterInput } from "./data-table-filter-input";
-import { DataTableFacetedFilter } from "./data-table-faceted-filter";
-import { X } from "lucide-react";
 import { TableProps } from "@/app/_types/table";
-import { DataTableFilterPeriod } from "./data-table-filter-period";
+
 import { Button } from "../ui/button";
+import { DataTableFacetedFilter } from "./data-table-faceted-filter";
+import { DataTableFilterInput } from "./data-table-filter-input";
 import { DataTablePagination } from "./data-table-pagination";
 
 export const DataTable = ({
@@ -34,7 +34,6 @@ export const DataTable = ({
   columns,
   filterInput,
   filters,
-  pageFilterPeriod,
 }: TableProps) => {
   const [rowSelection, setRowSelection] = useState({});
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
@@ -98,9 +97,6 @@ export const DataTable = ({
                 />
               );
             })}
-            {pageFilterPeriod && (
-              <DataTableFilterPeriod page={pageFilterPeriod} />
-            )}
 
             {isFiltered && (
               <Button
@@ -166,9 +162,9 @@ export const DataTable = ({
         </Table>
       </div>
       <div className="flex flex-col items-center justify-center lg:flex-row">
-        <div className="flex-1 text-sm text-muted-foreground">
+        <span className="w-fit whitespace-nowrap text-sm text-muted-foreground">
           {table.getFilteredRowModel().rows.length} registros
-        </div>
+        </span>
         <DataTablePagination table={table} />
       </div>
     </div>

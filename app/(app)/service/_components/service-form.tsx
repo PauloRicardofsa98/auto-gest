@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 
 import { InputField } from "@/app/_components/inputs/input-field";
-import { InputPrice } from "@/app/_components/inputs/price";
+import { InputPrice } from "@/app/_components/inputs/input-price";
 import { Button } from "@/app/_components/ui/button";
 import { Form } from "@/app/_components/ui/form";
 import usePromiseToast from "@/app/_hooks/toast-promise";

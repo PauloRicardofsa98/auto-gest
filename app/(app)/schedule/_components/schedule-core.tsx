@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
 import Loading from "@/app/_components/loading";
-import { DataTable } from "@/app/_components/table/dataTable";
+import { DataTable } from "@/app/_components/table/data-table";
 import { listSchedules } from "@/app/_data/schedule";
 
 import HeaderSchedule from "./header-schedule";

@@ -1,4 +1,6 @@
-import { DataTable } from "@/app/_components/table/dataTable";
+import Link from "next/link";
+
+import { DataTable } from "@/app/_components/table/data-table";
 import { Button } from "@/app/_components/ui/button";
 import {
   Card,
@@ -9,8 +11,8 @@ import {
 } from "@/app/_components/ui/card";
 import { listEmployers } from "@/app/_data/employer";
 import { getPeriod } from "@/app/_utils/helper";
+
 import { employerColumns } from "./_components/employer-columns";
-import Link from "next/link";
 
 const EmployerPage = async ({
   searchParams,

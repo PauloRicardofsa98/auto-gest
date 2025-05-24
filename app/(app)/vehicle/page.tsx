@@ -1,4 +1,6 @@
-import { DataTable } from "@/app/_components/table/dataTable";
+import Link from "next/link";
+
+import { DataTable } from "@/app/_components/table/data-table";
 import { Button } from "@/app/_components/ui/button";
 import {
   Card,
@@ -9,8 +11,8 @@ import {
 } from "@/app/_components/ui/card";
 import { listVehicles } from "@/app/_data/vehicle";
 import { getPeriod } from "@/app/_utils/helper";
+
 import { vehicleColumns } from "./_components/vehicle-columns";
-import Link from "next/link";
 
 const VehiclePage = async ({
   searchParams,

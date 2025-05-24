@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
-import { InputCpfCnpj } from "@/app/_components/inputs/cpfCnpj";
+import { InputCpfCnpj } from "@/app/_components/inputs/input-cpf-cnpj";
 import { InputField } from "@/app/_components/inputs/input-field";
 import { Button } from "@/app/_components/ui/button";
 import { Form } from "@/app/_components/ui/form";

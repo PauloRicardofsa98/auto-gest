@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { DataTable } from "@/app/_components/table/dataTable";
+import { DataTable } from "@/app/_components/table/data-table";
 import { Button } from "@/app/_components/ui/button";
 import {
   Card,

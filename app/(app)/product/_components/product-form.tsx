@@ -1,19 +1,21 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { Button } from "@/app/_components/ui/button";
-import { Form } from "@/app/_components/ui/form";
+import { Product, Unit } from "@prisma/client";
 import { Plus, Upload } from "lucide-react";
 import { useRouter } from "next/navigation";
-import usePromiseToast from "@/app/_hooks/toast-promise";
-import { createProduct } from "../_actions/create-product";
-import { updateProduct } from "../_actions/update-product";
-import { Product, Unit } from "@prisma/client";
-import { ProductProps, productSchema } from "../_actions/product-schema";
+import { useForm } from "react-hook-form";
+
+import { ComboboxInput } from "@/app/_components/inputs/input-combobox";
 import { InputField } from "@/app/_components/inputs/input-field";
-import { InputPrice } from "@/app/_components/inputs/price";
-import { ComboboxInput } from "@/app/_components/inputs/combobox-input";
+import { InputPrice } from "@/app/_components/inputs/input-price";
+import { Button } from "@/app/_components/ui/button";
+import { Form } from "@/app/_components/ui/form";
+import usePromiseToast from "@/app/_hooks/toast-promise";
+
+import { createProduct } from "../_actions/create-product";
+import { ProductProps, productSchema } from "../_actions/product-schema";
+import { updateProduct } from "../_actions/update-product";
 
 interface FormProps {
   product?: Product;

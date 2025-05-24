@@ -1,4 +1,6 @@
+import { Control, FieldValues, Path } from "react-hook-form";
 import { NumericFormat } from "react-number-format";
+
 import {
   FormControl,
   FormField,
@@ -7,7 +9,6 @@ import {
   FormMessage,
 } from "../ui/form";
 import { Input } from "../ui/input";
-import { Control, FieldValues, Path } from "react-hook-form";
 
 interface InputProps<T extends FieldValues> {
   control: Control<T>;
@@ -16,6 +17,7 @@ interface InputProps<T extends FieldValues> {
   disabled?: boolean;
   className?: string;
 }
+
 export const InputPrice = <T extends FieldValues>({
   control,
   name,
@@ -48,3 +50,5 @@ export const InputPrice = <T extends FieldValues>({
     />
   );
 };
+
+export default InputPrice;

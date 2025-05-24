@@ -1,19 +1,21 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { Button } from "@/app/_components/ui/button";
-import { Form } from "@/app/_components/ui/form";
+import { Employer, Prisma } from "@prisma/client";
 import { Plus, Upload } from "lucide-react";
 import { useRouter } from "next/navigation";
-import usePromiseToast from "@/app/_hooks/toast-promise";
-import { createEmployer } from "../_actions/create-employer";
-import { updateEmployer } from "../_actions/update-employer";
-import { Employer, Prisma } from "@prisma/client";
-import { EmployerProps, employerSchema } from "../_actions/employer-schema";
+import { useForm } from "react-hook-form";
+
+import { InputCpfCnpj } from "@/app/_components/inputs/input-cpf-cnpj";
 import { InputField } from "@/app/_components/inputs/input-field";
+import { Button } from "@/app/_components/ui/button";
+import { Form } from "@/app/_components/ui/form";
+import usePromiseToast from "@/app/_hooks/toast-promise";
 import { maskCpfCnpj, removeMask } from "@/app/_utils/helper";
-import { InputCpfCnpj } from "@/app/_components/inputs/cpfCnpj";
+
+import { createEmployer } from "../_actions/create-employer";
+import { EmployerProps, employerSchema } from "../_actions/employer-schema";
+import { updateEmployer } from "../_actions/update-employer";
 
 interface FormProps {
   employer?: Employer;

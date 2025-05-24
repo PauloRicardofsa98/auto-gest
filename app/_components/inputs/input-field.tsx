@@ -62,3 +62,5 @@ export const InputField = <T extends FieldValues>({
     />
   );
 };
+
+export default InputField;

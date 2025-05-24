@@ -32,7 +32,7 @@ interface InputProps<T extends FieldValues> {
   className?: string;
 }
 
-export const ComboboxInput = <T extends FieldValues>({
+export const InputCombobox = <T extends FieldValues>({
   control,
   form,
   name,
@@ -100,3 +100,5 @@ export const ComboboxInput = <T extends FieldValues>({
     />
   );
 };
+
+export default InputCombobox;

@@ -1,15 +1,17 @@
-import { DataTable } from "@/app/_components/table/dataTable";
-import { productSupplierColumns } from "./product-supplier-columns";
+import { Product } from "@prisma/client";
+
+import { DataTable } from "@/app/_components/table/data-table";
+import { Button } from "@/app/_components/ui/button";
 import {
   Card,
+  CardContent,
   CardHeader,
   CardTitle,
-  CardContent,
 } from "@/app/_components/ui/card";
-import ManagerProductSupplier from "./manager-product-supplier";
-import { Product } from "@prisma/client";
 import { listProductSuppliers } from "@/app/_data/product-supplier";
-import { Button } from "@/app/_components/ui/button";
+
+import ManagerProductSupplier from "./manager-product-supplier";
+import { productSupplierColumns } from "./product-supplier-columns";
 
 interface TabProductSuppliersProps {
   product: Product;
