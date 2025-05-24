@@ -1,8 +1,8 @@
 "use client";
 
 import { DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
-import { ChevronDown } from "lucide-react";
 import { Table } from "@tanstack/react-table";
+import { ChevronDown } from "lucide-react";
 
 import { Button } from "@/app/_components/ui/button";
 import {
@@ -52,3 +52,5 @@ export function DataTableViewOptions<TData>({
     </DropdownMenu>
   );
 }
+
+export default DataTableViewOptions;

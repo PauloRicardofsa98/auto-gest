@@ -1,8 +1,8 @@
-import * as React from "react";
-import { Check, PlusCircle } from "lucide-react";
 import { Column } from "@tanstack/react-table";
+import { Check, PlusCircle } from "lucide-react";
+import * as React from "react";
+import { useEffect } from "react";
 
-import { cn } from "@/app/_lib/utils";
 import { Badge } from "@/app/_components/ui/badge";
 import { Button } from "@/app/_components/ui/button";
 import {
@@ -20,8 +20,8 @@ import {
   PopoverTrigger,
 } from "@/app/_components/ui/popover";
 import { Separator } from "@/app/_components/ui/separator";
+import { cn } from "@/app/_lib/utils";
 import { OptionFilter } from "@/app/_types/table";
-import { useEffect } from "react";
 
 interface DataTableFacetedFilterProps<TData, TValue> {
   column?: Column<TData, TValue>;
@@ -159,3 +159,5 @@ export function DataTableFacetedFilter<TData, TValue>({
     </Popover>
   );
 }
+
+export default DataTableFacetedFilter;

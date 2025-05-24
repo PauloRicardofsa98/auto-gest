@@ -1,6 +1,6 @@
-import { cn } from "@/app/_lib/utils";
-
 import { HTMLAttributes } from "react";
+
+import { cn } from "@/app/_lib/utils";
 
 interface DataTableColumnContentProps extends HTMLAttributes<HTMLDivElement> {
   align?: "start" | "center" | "end";
@@ -19,3 +19,5 @@ export function DataTableColumnContent({
     </div>
   );
 }
+
+export default DataTableColumnContent;

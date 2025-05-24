@@ -1,7 +1,7 @@
-import { ArrowDownIcon, ArrowUpIcon, ChevronsUpDown, Eye } from "lucide-react";
 import { Column } from "@tanstack/react-table";
+import { ArrowDownIcon, ArrowUpIcon, ChevronsUpDown, Eye } from "lucide-react";
+import { HTMLAttributes } from "react";
 
-import { cn } from "@/app/_lib/utils";
 import { Button } from "@/app/_components/ui/button";
 import {
   DropdownMenu,
@@ -10,7 +10,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/app/_components/ui/dropdown-menu";
-import { HTMLAttributes } from "react";
+import { cn } from "@/app/_lib/utils";
 
 interface DataTableColumnHeaderProps<TData, TValue>
   extends HTMLAttributes<HTMLDivElement> {
@@ -73,3 +73,5 @@ export function DataTableColumnHeader<TData, TValue>({
     </div>
   );
 }
+
+export default DataTableColumnHeader;
