@@ -1,19 +1,22 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { Button } from "@/app/_components/ui/button";
-import { Form } from "@/app/_components/ui/form";
+import { Client } from "@prisma/client";
 import { Plus, Upload } from "lucide-react";
 import { useRouter } from "next/navigation";
-import usePromiseToast from "@/app/_hooks/toast-promise";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+
+import { InputCpfCnpj } from "@/app/_components/inputs/cpfCnpj";
+import { InputField } from "@/app/_components/inputs/input-field";
+import { Button } from "@/app/_components/ui/button";
+import { Form } from "@/app/_components/ui/form";
+import { maskCpfCnpj, removeMask } from "@/app/_utils/helper";
+
+import { createClientSchema } from "../_actions/client-schema";
+import { CreateClientProps } from "../_actions/client-schema";
 import { createClient } from "../_actions/create-client";
 import { updateClient } from "../_actions/update-client";
-import { Client } from "@prisma/client";
-import { ClientProps, clientSchema } from "../_actions/client-schema";
-import { maskCpfCnpj, removeMask } from "@/app/_utils/helper";
-import { InputField } from "@/app/_components/inputs/input-field";
-import { InputCpfCnpj } from "@/app/_components/inputs/cpfCnpj";
 
 interface FormProps {
   client: Client | null;
@@ -21,49 +24,46 @@ interface FormProps {
 
 export const FormClient = ({ client }: FormProps) => {
   const router = useRouter();
-  const toastPromise = usePromiseToast();
 
-  const form = useForm<ClientProps>({
-    resolver: zodResolver(clientSchema),
+  const form = useForm<CreateClientProps>({
+    resolver: zodResolver(createClientSchema),
     defaultValues: {
       name: client?.name || "",
       address: client?.address || "",
-      cpfCnpj: client ? maskCpfCnpj(client.cpfCnpj) : "",
+      cpfCnpj: client?.cpfCnpj ? maskCpfCnpj(client.cpfCnpj) : "",
       email: client?.email || "",
       observations: client?.observations || "",
       phone: client?.phone || "",
     },
   });
 
-  async function onSubmit(data: ClientProps) {
-    const dataFormatted: ClientProps = {
+  async function onSubmit(data: CreateClientProps) {
+    const dataFormatted: CreateClientProps = {
       name: data.name,
-      cpfCnpj: removeMask(data.cpfCnpj),
+      cpfCnpj: data.cpfCnpj ? removeMask(data.cpfCnpj) : "",
       phone: data.phone,
       email: data.email,
       address: data.address,
       observations: data.observations,
     };
-    if (client) {
-      const { uuid } = client;
-      const update = updateClient(uuid, dataFormatted).then((response) => {
-        if (typeof response !== "string") {
-          router.push("/client");
-          form.reset();
+
+    const promise = client
+      ? updateClient(client.uuid, dataFormatted)
+      : createClient(dataFormatted);
+    toast.promise(promise, {
+      loading: client ? "Atualizando cliente..." : "Criando cliente...",
+      success: (response) => {
+        if (typeof response === "string") {
+          throw new Error(response);
         }
-        return response;
-      });
-      toastPromise.promise(update, "update");
-    } else {
-      const create = createClient(dataFormatted).then((response) => {
-        if (typeof response !== "string") {
-          router.push("/client");
-          form.reset();
-        }
-        return response;
-      });
-      toastPromise.promise(create, "create");
-    }
+        router.push("/client");
+        form.reset();
+        return client
+          ? "Cliente atualizado com sucesso"
+          : "Cliente criado com sucesso";
+      },
+      error: (error) => error.message,
+    });
   }
 
   return (
@@ -71,7 +71,11 @@ export const FormClient = ({ client }: FormProps) => {
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
         <div className="grid grid-cols-3 gap-4">
           <InputField control={form.control} description="Nome" name="name" />
-          <InputCpfCnpj control={form.control} name="cpfCnpj" />
+          <InputCpfCnpj
+            control={form.control}
+            name="cpfCnpj"
+            label="CPF/CNPJ (Opcional)"
+          />
           <InputField
             control={form.control}
             description="Contato"

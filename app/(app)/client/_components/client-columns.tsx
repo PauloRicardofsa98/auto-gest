@@ -1,24 +1,24 @@
 "use client";
+import { Client } from "@prisma/client";
+import { ColumnDef } from "@tanstack/react-table";
 import { Contact } from "lucide-react";
 
-import { ColumnDef } from "@tanstack/react-table";
+import { DataTableColumnContent } from "@/app/_components/table/data-table-column-content";
+import { DataTableColumnHeader } from "@/app/_components/table/data-table-column-header";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@/app/_components/ui/tooltip";
-import { Client } from "@prisma/client";
-import { DataTableColumnHeader } from "@/app/_components/table/data-table-column-header";
-import { DataTableColumnContent } from "@/app/_components/table/data-table-column-content";
-import ObsClient from "./obs-client";
 import { maskCpfCnpj } from "@/app/_utils/helper";
+
 import { ClientRowActions } from "./client-row-actions";
+import ObsClient from "./obs-client";
 
 export const clientColumns: ColumnDef<Client>[] = [
   {
     accessorKey: "id",
-
     header: ({ column }) => (
       <DataTableColumnHeader
         column={column}
@@ -33,7 +33,6 @@ export const clientColumns: ColumnDef<Client>[] = [
   },
   {
     accessorKey: "observation",
-
     header: ({ column }) => (
       <DataTableColumnHeader
         column={column}
@@ -50,7 +49,6 @@ export const clientColumns: ColumnDef<Client>[] = [
   },
   {
     accessorKey: "name",
-
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Nome" align="start" />
     ),
@@ -59,7 +57,7 @@ export const clientColumns: ColumnDef<Client>[] = [
         <div className="flex flex-col">
           <span>{client.name}</span>
           <span className="text-sm text-muted-foreground">
-            {maskCpfCnpj(client.cpfCnpj)}
+            {client.cpfCnpj ? maskCpfCnpj(client.cpfCnpj) : ""}
           </span>
         </div>
       </DataTableColumnContent>
@@ -67,10 +65,9 @@ export const clientColumns: ColumnDef<Client>[] = [
     filterFn: (row, id, value) => {
       const noPoints = value.replace(/\D/g, "");
       const isNumber = /^\d+$/.test(noPoints);
-      if (isNumber) {
-        const includeCpf = row.original.cpfCnpj.includes(
-          value.replace(/\D/g, ""),
-        );
+      const cpfCnpj = row.original.cpfCnpj;
+      if (isNumber && cpfCnpj) {
+        const includeCpf = cpfCnpj.includes(noPoints);
         return includeCpf;
       }
 
@@ -86,7 +83,6 @@ export const clientColumns: ColumnDef<Client>[] = [
     cell: ({ row: { original: client } }) => {
       const email = client.email;
       const phone = client.phone;
-
       return (
         <DataTableColumnContent>
           <TooltipProvider>

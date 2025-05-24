@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 import { DataTable } from "@/app/_components/table/dataTable";
 import { Button } from "@/app/_components/ui/button";
 import {
@@ -8,21 +10,17 @@ import {
   CardTitle,
 } from "@/app/_components/ui/card";
 import { listClients } from "@/app/_data/client";
-import { getPeriod } from "@/app/_utils/helper";
+
 import { clientColumns } from "./_components/client-columns";
-import Link from "next/link";
 
 const ClientPage = async ({
   searchParams,
 }: {
-  searchParams: Promise<{ period: string; clientUuid: string }>;
+  searchParams: Promise<{ clientUuid: string }>;
 }) => {
-  const { clientUuid, period } = await searchParams;
-
-  const filterPeriod = getPeriod(period);
+  const { clientUuid } = await searchParams;
 
   const clients = await listClients({
-    AND: filterPeriod,
     uuid: clientUuid,
   });
 
@@ -42,8 +40,7 @@ const ClientPage = async ({
         <DataTable
           columns={clientColumns}
           data={clients}
-          filterInput={{ name: "name", title: "Nome ou cpf" }}
-          pageFilterPeriod="client"
+          filterInput={{ name: "name", title: "Nome ou cpf/cnpj" }}
         />
       </CardContent>
     </Card>

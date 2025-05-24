@@ -1,12 +1,14 @@
 "use client";
 
-import { useState } from "react";
-import usePromiseToast from "@/app/_hooks/toast-promise";
-import { PencilIcon, Trash2Icon } from "lucide-react";
 import { Client } from "@prisma/client";
-import { deleteClient } from "../_actions/delete-client";
-import { AlertDelete } from "@/app/_components/alert-delete";
+import { PencilIcon, Trash2Icon } from "lucide-react";
 import Link from "next/link";
+import { useState } from "react";
+
+import { AlertDelete } from "@/app/_components/alert-delete";
+import usePromiseToast from "@/app/_hooks/toast-promise";
+
+import { deleteClient } from "../_actions/delete-client";
 
 interface ClientRowActionProps {
   client: Client;

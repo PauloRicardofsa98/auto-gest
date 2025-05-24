@@ -1,4 +1,8 @@
 import React from "react";
+import { Control, FieldValues, Path } from "react-hook-form";
+
+import { maskCpfCnpj } from "@/app/_utils/helper";
+
 import {
   FormControl,
   FormField,
@@ -7,17 +11,17 @@ import {
   FormMessage,
 } from "../ui/form";
 import { Input } from "../ui/input";
-import { Control, FieldValues, Path } from "react-hook-form";
-import { maskCpfCnpj } from "@/app/_utils/helper";
 
 interface InputCpfCnpjProps<T extends FieldValues> {
   control: Control<T>;
   name: Path<T>;
+  label?: string;
 }
 
 export const InputCpfCnpj = <T extends FieldValues>({
   control,
   name,
+  label = "CPF ou CNPJ",
 }: InputCpfCnpjProps<T>) => {
   return (
     <FormField
@@ -26,7 +30,7 @@ export const InputCpfCnpj = <T extends FieldValues>({
       render={({ field: { onChange, value, ...rest } }) => {
         return (
           <FormItem>
-            <FormLabel>CPF ou CNPJ</FormLabel>
+            <FormLabel>{label}</FormLabel>
             <FormControl>
               <Input
                 onChange={(e) => {

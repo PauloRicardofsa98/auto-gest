@@ -1,7 +1,8 @@
-import { validateCpfCnpj } from "@/app/_utils/validations";
 import { z } from "zod";
 
-export const clientSchema = z.object({
+import { validateCpfCnpj } from "@/app/_utils/validations";
+
+export const createClientSchema = z.object({
   name: z
     .string({
       required_error: "O nome é obrigatório",
@@ -9,11 +10,9 @@ export const clientSchema = z.object({
     .min(1, "Este campo é obrigatório"),
 
   cpfCnpj: z
-    .string({
-      required_error: "O cpf/cnpj é obrigatório",
-    })
-    .min(1, "Este campo é obrigatório")
-    .refine((value) => validateCpfCnpj(value), {
+    .string()
+    .optional()
+    .refine((value) => (value ? validateCpfCnpj(value) : true), {
       message: "CPF/CNPJ inválido",
     }),
   phone: z
@@ -41,4 +40,7 @@ export const clientSchema = z.object({
     .default(""),
 });
 
-export type ClientProps = z.infer<typeof clientSchema>;
+export const updateClientSchema = createClientSchema.partial();
+
+export type CreateClientProps = z.infer<typeof createClientSchema>;
+export type UpdateClientProps = z.infer<typeof updateClientSchema>;

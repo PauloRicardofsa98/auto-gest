@@ -1,14 +1,15 @@
-import { FieldValues, Control, Path } from "react-hook-form";
+import { HTMLInputTypeAttribute } from "react";
+import { Control, FieldValues, Path } from "react-hook-form";
 import { PatternFormat } from "react-number-format";
+
 import {
+  FormControl,
   FormField,
   FormItem,
   FormLabel,
-  FormControl,
   FormMessage,
 } from "../ui/form";
 import { Input } from "../ui/input";
-import { HTMLInputTypeAttribute } from "react";
 
 interface InputEmailProps<T extends FieldValues> {
   control: Control<T>;

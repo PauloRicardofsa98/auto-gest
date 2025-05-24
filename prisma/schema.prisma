@@ -14,7 +14,7 @@ model Client {
   email        String
   phone        String
   address      String
-  cpfCnpj      String
+  cpfCnpj      String?
   observations String?
   createdAt    DateTime   @default(now())
   updatedAt    DateTime   @updatedAt

@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Client" ALTER COLUMN "cpfCnpj" DROP NOT NULL;

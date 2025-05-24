@@ -5,8 +5,9 @@ import {
   CardHeader,
   CardTitle,
 } from "@/app/_components/ui/card";
-import { FormClient } from "../_components/client-form";
 import { getClient } from "@/app/_data/client";
+
+import { FormClient } from "../_components/client-form";
 
 const ManagerClient = async ({
   params,
