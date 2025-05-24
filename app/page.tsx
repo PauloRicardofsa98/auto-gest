@@ -1,8 +1,9 @@
 import { SignInButton } from "@clerk/nextjs";
-import Image from "next/image";
-import { Button } from "./_components/ui/button";
 import { auth } from "@clerk/nextjs/server";
+import Image from "next/image";
 import { redirect } from "next/navigation";
+
+import { Button } from "./_components/ui/button";
 
 export default async function Home() {
   const { userId } = await auth();
@@ -13,7 +14,7 @@ export default async function Home() {
 
   return (
     <div className="grid h-screen grid-cols-1 gap-4 bg-black lg:grid-cols-[2fr,1fr]">
-      <div className="polygon hidden h-full w-full bg-red-200 lg:flex">
+      <div className="polygon hidden h-full w-full lg:flex">
         <Image src="/opala.png" alt="Formotech" className="object-cover" fill />
       </div>
       <div className="relative flex items-center justify-center bg-[url(/opala.png)] bg-center p-8 sm:bg-none lg:justify-start">
