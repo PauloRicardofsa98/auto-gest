@@ -1,7 +1,8 @@
 "use server";
 
-import { db } from "@/app/_lib/prisma";
 import { Prisma } from "@prisma/client";
+
+import { db } from "@/app/_lib/prisma";
 
 export const listCategoryProducts = async (
   where?: Prisma.CategoryProductWhereInput,
