@@ -91,7 +91,7 @@ model Service {
 model Vehicle {
   id         Int        @default(autoincrement())
   uuid       String     @id @default(uuid())
-  plate      String
+  plate      String     @unique
   model      String
   brand      Brand
   year       Int?

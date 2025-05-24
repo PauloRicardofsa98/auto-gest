@@ -1,7 +1,8 @@
 "use server";
 
-import { db } from "@/app/_lib/prisma";
 import { Prisma } from "@prisma/client";
+
+import { db } from "@/app/_lib/prisma";
 
 export const listEmployers = async (where?: Prisma.EmployerWhereInput) => {
   const employers = await db.employer.findMany({
@@ -29,7 +30,7 @@ export const getEmployerCommission = async (
           AND: where,
         },
         include: {
-          service: true,
+          scheduleServices: true,
         },
       },
     },
@@ -41,7 +42,15 @@ export const getEmployerCommission = async (
       return {
         ...rest,
         value: schedules.reduce((acc, schedule) => {
-          return acc + Number(schedule.service.price);
+          return (
+            acc +
+              Number(
+                schedule.scheduleServices.reduce(
+                  (acc, service) => acc + Number(service.value),
+                  0,
+                ),
+              ) || 0
+          );
         }, 0),
         quantityServices: schedules.length,
       };

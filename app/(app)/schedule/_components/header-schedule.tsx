@@ -96,9 +96,13 @@ const HeaderSchedule = ({
       };
     }
     if (serviceFilter.length > 0) {
-      filters.service = {
-        uuid: {
-          in: serviceFilter,
+      filters.scheduleServices = {
+        some: {
+          service: {
+            uuid: {
+              in: serviceFilter,
+            },
+          },
         },
       };
     }
