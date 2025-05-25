@@ -11,6 +11,7 @@ import { toast } from "sonner";
 import InputCombobox from "@/app/_components/inputs/input-combobox";
 import InputDate from "@/app/_components/inputs/input-date";
 import InputField from "@/app/_components/inputs/input-field";
+import InputPlate from "@/app/_components/inputs/input-license-plate";
 import InputScheduleService from "@/app/_components/inputs/schedule-service/input-schedule-service";
 import { Button } from "@/app/_components/ui/button";
 import {
@@ -174,11 +175,11 @@ const FormSchedule = ({ schedule, clients, services }: FormRecordProps) => {
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
         <div className="grid grid-cols-3 gap-4">
           <InputDate control={form.control} name="date" description="Data" />
-          <InputField
+          <InputPlate
             control={form.control}
             name="plate"
             description="Placa"
-            onBlur={handleBlurPlate}
+            onBlurCallback={handleBlurPlate}
           />
           <InputField
             control={form.control}
