@@ -1,4 +1,3 @@
-import { getEmployer } from "@/app/_data/employer";
 import {
   Card,
   CardContent,
@@ -6,9 +5,11 @@ import {
   CardHeader,
   CardTitle,
 } from "@/app/_components/ui/card";
-import { FormEmployer } from "../../employer/_components/employer-form";
+import { getEmployer } from "@/app/_data/employer";
 
-const ManagerEmployer = async ({
+import FormEmployer from "../../employer/_components/employer-form";
+
+const ManagerEmployerPage = async ({
   params,
 }: {
   params: Promise<{ employerUuid: string }>;
@@ -29,4 +30,4 @@ const ManagerEmployer = async ({
   );
 };
 
-export default ManagerEmployer;
+export default ManagerEmployerPage;

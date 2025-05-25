@@ -11,7 +11,7 @@ import { listServices } from "@/app/_data/service";
 
 import FormSchedule from "../_components/schedule-form";
 
-const ManagerSchedule = async ({
+const ManagerSchedulePage = async ({
   params,
 }: {
   params: Promise<{ scheduleUuid: string }>;
@@ -60,4 +60,4 @@ const ManagerSchedule = async ({
   );
 };
 
-export default ManagerSchedule;
+export default ManagerSchedulePage;

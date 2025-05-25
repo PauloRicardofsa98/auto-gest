@@ -18,7 +18,7 @@ interface InputProps<T extends FieldValues> {
   className?: string;
 }
 
-export const InputPrice = <T extends FieldValues>({
+const InputPrice = <T extends FieldValues>({
   control,
   name,
   description,

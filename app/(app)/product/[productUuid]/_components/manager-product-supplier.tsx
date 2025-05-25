@@ -5,9 +5,10 @@ import { Prisma, Product, ProductSupplier, Supplier } from "@prisma/client";
 import { PlusIcon, UploadIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 
-import { ComboboxInput } from "@/app/_components/inputs/input-combobox";
-import { InputPrice } from "@/app/_components/inputs/input-price";
+import InputCombobox from "@/app/_components/inputs/input-combobox";
+import InputPrice from "@/app/_components/inputs/input-price";
 import { Button } from "@/app/_components/ui/button";
 import { Form } from "@/app/_components/ui/form";
 import {
@@ -18,7 +19,6 @@ import {
   SheetTrigger,
 } from "@/app/_components/ui/sheet";
 import { listSuppliers } from "@/app/_data/supplier";
-import usePromiseToast from "@/app/_hooks/toast-promise";
 
 import { createProductSupplier } from "../_actions/create-product-supplier";
 import {
@@ -39,7 +39,6 @@ const ManagerProductSupplier = ({
 }: ManagerProductSupplierProps) => {
   const [open, setOpen] = useState(false);
   const [suppliers, setSuppliers] = useState<Supplier[]>([]);
-  const toastPromise = usePromiseToast();
 
   useEffect(() => {
     const loadSuppliers = async () => {
@@ -72,30 +71,24 @@ const ManagerProductSupplier = ({
       },
     };
 
-    if (productSupplier) {
-      const { uuid } = productSupplier;
-      const update = updateProductSupplier(uuid, dataFormatted).then(
-        (response) => {
-          if (typeof response !== "string") {
-            form.reset();
-            setOpen(false);
-          }
-          return response;
-        },
-      );
-      toastPromise.promise(update, "update");
-    } else {
-      const create = createProductSupplier(dataFormatted, product.uuid).then(
-        (response) => {
-          if (typeof response !== "string") {
-            form.reset();
-            setOpen(false);
-          }
-          return response;
-        },
-      );
-      toastPromise.promise(create, "create");
-    }
+    const promise = productSupplier
+      ? updateProductSupplier(productSupplier.uuid, dataFormatted)
+      : createProductSupplier(dataFormatted, product.uuid);
+
+    toast.promise(promise, {
+      loading: productSupplier ? "Atualizando..." : "Criando...",
+      success: (response) => {
+        if (typeof response === "string") {
+          throw new Error(response);
+        }
+        form.reset();
+        setOpen(false);
+        return productSupplier
+          ? "Fornecedor atualizado com sucesso"
+          : "Fornecedor criado com sucesso";
+      },
+      error: (error) => error.message,
+    });
   }
 
   return (
@@ -108,7 +101,7 @@ const ManagerProductSupplier = ({
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <div className="grid grid-cols-1 gap-4">
-              <ComboboxInput
+              <InputCombobox
                 control={form.control}
                 form={form}
                 description="Fornecedor"

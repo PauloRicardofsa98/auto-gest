@@ -17,7 +17,7 @@ interface ActionDeleteProps {
   handleDelete: () => void;
 }
 
-export const AlertDelete = ({
+const AlertDelete = ({
   open,
   title,
   toggleAlert,

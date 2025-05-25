@@ -1,4 +1,7 @@
 "use client";
+import React from "react";
+import { Bar, BarChart, CartesianGrid, LabelList, XAxis } from "recharts";
+
 import {
   Card,
   CardContent,
@@ -11,8 +14,6 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/app/_components/ui/chart";
-import React from "react";
-import { BarChart, CartesianGrid, XAxis, Bar, LabelList } from "recharts";
 
 const chartConfig = {
   quantity: {
@@ -37,7 +38,7 @@ interface ChartRankingProps {
   }[];
 }
 
-export const ChartRanking = ({ commissions }: ChartRankingProps) => {
+const ChartRanking = ({ commissions }: ChartRankingProps) => {
   const data = commissions.map((commission) => {
     const name = commission.name.trimStart().split(" ");
     return {
@@ -85,3 +86,5 @@ export const ChartRanking = ({ commissions }: ChartRankingProps) => {
     </Card>
   );
 };
+
+export default ChartRanking;

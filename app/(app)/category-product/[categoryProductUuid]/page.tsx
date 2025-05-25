@@ -6,9 +6,10 @@ import {
   CardTitle,
 } from "@/app/_components/ui/card";
 import { getCategoryProduct } from "@/app/_data/category-product";
-import { FormCategoryProduct } from "../_components/category-product-form";
 
-const ManagerCategoryProduct = async ({
+import FormCategoryProduct from "../_components/category-product-form";
+
+const ManagerCategoryProductPage = async ({
   params,
 }: {
   params: Promise<{ categoryProductUuid: string }>;
@@ -33,4 +34,4 @@ const ManagerCategoryProduct = async ({
   );
 };
 
-export default ManagerCategoryProduct;
+export default ManagerCategoryProductPage;

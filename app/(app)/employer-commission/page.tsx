@@ -4,7 +4,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/app/_components/ui/card";
-import { ChartRanking } from "./_components/chart-ranking";
 import {
   Table,
   TableBody,
@@ -14,26 +13,18 @@ import {
   TableRow,
 } from "@/app/_components/ui/table";
 import { getEmployerCommission } from "@/app/_data/employer";
-import { currencyFormat, getPeriod } from "@/app/_utils/helper";
-import { DataTableFilterPeriod } from "@/app/_components/table/data-table-filter-period";
+import { currencyFormat } from "@/app/_utils/helper";
 
-const EmployerCommission = async ({
-  searchParams,
-}: {
-  searchParams: Promise<{ period: string }>;
-}) => {
-  const { period } = await searchParams;
+import ChartRanking from "./_components/chart-ranking";
 
-  const filterPeriod = getPeriod(period);
+const EmployerCommissionPage = async () => {
   const now = new Date();
   const startOfCurrentMonth = new Date(now.getFullYear(), now.getMonth(), 1);
 
   const commission = await getEmployerCommission({
-    createdAt: filterPeriod
-      ? filterPeriod.createdAt
-      : {
-          gte: startOfCurrentMonth,
-        },
+    createdAt: {
+      gte: startOfCurrentMonth,
+    },
   });
 
   return (
@@ -42,7 +33,6 @@ const EmployerCommission = async ({
         <CardTitle>
           <div className="flex items-center justify-between">
             <span>Relatório de comissão</span>
-            <DataTableFilterPeriod page="employer-commission" />
           </div>
         </CardTitle>
       </CardHeader>
@@ -84,4 +74,4 @@ const EmployerCommission = async ({
   );
 };
 
-export default EmployerCommission;
+export default EmployerCommissionPage;

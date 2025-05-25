@@ -5,12 +5,13 @@ import { Brand, Client, Prisma, Vehicle } from "@prisma/client";
 import { Plus, Upload } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 
-import { ComboboxInput } from "@/app/_components/inputs/input-combobox";
-import { InputField } from "@/app/_components/inputs/input-field";
+import InputCombobox from "@/app/_components/inputs/input-combobox";
+import InputField from "@/app/_components/inputs/input-field";
+import InputPlate from "@/app/_components/inputs/input-license-plate";
 import { Button } from "@/app/_components/ui/button";
 import { Form } from "@/app/_components/ui/form";
-import usePromiseToast from "@/app/_hooks/toast-promise";
 
 import { createVehicle } from "../_actions/create-vehicle";
 import { updateVehicle } from "../_actions/update-vehicle";
@@ -21,9 +22,8 @@ interface FormProps {
   clients: Client[];
 }
 
-export const FormVehicle = ({ vehicle, clients }: FormProps) => {
+const FormVehicle = ({ vehicle, clients }: FormProps) => {
   const router = useRouter();
-  const toastPromise = usePromiseToast();
 
   const form = useForm<VehicleProps>({
     resolver: zodResolver(vehicleSchema),
@@ -51,40 +51,37 @@ export const FormVehicle = ({ vehicle, clients }: FormProps) => {
       },
     };
 
-    if (vehicle) {
-      const { uuid } = vehicle;
-      const update = updateVehicle(uuid, dataFormatted).then((response) => {
-        if (typeof response !== "string") {
-          router.push("/vehicle");
-          form.reset();
+    const promise = vehicle
+      ? updateVehicle(vehicle.uuid, dataFormatted)
+      : createVehicle(dataFormatted);
+
+    toast.promise(promise, {
+      loading: vehicle ? "Atualizando..." : "Criando...",
+      success: (response) => {
+        if (typeof response === "string") {
+          throw new Error(response);
         }
-        return response;
-      });
-      toastPromise.promise(update, "update");
-    } else {
-      const create = createVehicle(dataFormatted).then((response) => {
-        if (typeof response !== "string") {
-          router.push("/vehicle");
-          form.reset();
-        }
-        return response;
-      });
-      toastPromise.promise(create, "create");
-    }
+        router.push("/vehicle");
+        form.reset();
+        return vehicle
+          ? "Veículo atualizado com sucesso"
+          : "Veículo criado com sucesso";
+      },
+      error: (error) => error.message,
+    });
   }
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
         <div className="grid grid-cols-4 gap-4">
-          {/* #TODO: adicionar mascara na placa */}
-          <InputField control={form.control} description="Placa" name="plate" />
+          <InputPlate control={form.control} description="Placa" name="plate" />
           <InputField
             control={form.control}
             description="Modelo"
             name="model"
           />
-          <ComboboxInput
+          <InputCombobox
             control={form.control}
             description="Marca"
             name="brand"
@@ -101,7 +98,7 @@ export const FormVehicle = ({ vehicle, clients }: FormProps) => {
             type="number"
           />
           <InputField control={form.control} description="Cor" name="color" />
-          <ComboboxInput
+          <InputCombobox
             control={form.control}
             description="Cliente"
             name="clientUuid"
@@ -139,3 +136,5 @@ export const FormVehicle = ({ vehicle, clients }: FormProps) => {
     </Form>
   );
 };
+
+export default FormVehicle;

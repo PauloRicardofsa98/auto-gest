@@ -1,7 +1,7 @@
 import { Column } from "@tanstack/react-table";
 import { Check, PlusCircle } from "lucide-react";
 import * as React from "react";
-import { useEffect } from "react";
+import { ReactElement, useEffect } from "react";
 
 import { Badge } from "@/app/_components/ui/badge";
 import { Button } from "@/app/_components/ui/button";
@@ -21,19 +21,23 @@ import {
 } from "@/app/_components/ui/popover";
 import { Separator } from "@/app/_components/ui/separator";
 import { cn } from "@/app/_lib/utils";
-import { OptionFilter } from "@/app/_types/table";
 
 interface DataTableFacetedFilterProps<TData, TValue> {
   column?: Column<TData, TValue>;
   title?: string;
-  options: OptionFilter[];
+  options: {
+    value: any;
+    label: string;
+    icon?: ReactElement;
+    isDefault?: boolean;
+  }[];
 }
 
-export function DataTableFacetedFilter<TData, TValue>({
+const DataTableFacetedFilter = <TData, TValue>({
   column,
   title,
   options,
-}: DataTableFacetedFilterProps<TData, TValue>) {
+}: DataTableFacetedFilterProps<TData, TValue>) => {
   const selectedValues = new Set(column?.getFilterValue() as string[]);
 
   useEffect(() => {
@@ -158,6 +162,6 @@ export function DataTableFacetedFilter<TData, TValue>({
       </PopoverContent>
     </Popover>
   );
-}
+};
 
 export default DataTableFacetedFilter;

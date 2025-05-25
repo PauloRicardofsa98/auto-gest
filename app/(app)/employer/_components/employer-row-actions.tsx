@@ -1,25 +1,34 @@
 "use client";
 
-import { useState } from "react";
-import usePromiseToast from "@/app/_hooks/toast-promise";
-import { PencilIcon, Trash2Icon } from "lucide-react";
 import { Employer } from "@prisma/client";
-import { deleteEmployer } from "../_actions/delete-employer";
-import { AlertDelete } from "@/app/_components/alert-delete";
+import { PencilIcon, Trash2Icon } from "lucide-react";
 import Link from "next/link";
+import { useState } from "react";
+import { toast } from "sonner";
+
+import AlertDelete from "@/app/_components/alert-delete";
+
+import { deleteEmployer } from "../_actions/delete-employer";
 
 interface EmployerRowActionProps {
   employer: Employer;
 }
 
-export function EmployerRowActions({ employer }: EmployerRowActionProps) {
-  const toastPromise = usePromiseToast();
+const EmployerRowActions = ({ employer }: EmployerRowActionProps) => {
   const [openAlert, setOpenAlert] = useState(false);
 
   async function handleDelete() {
     const deleteEmployerPromise = deleteEmployer(employer.uuid);
-    toastPromise.promise(deleteEmployerPromise, "delete");
-    setOpenAlert(false);
+    toast.promise(deleteEmployerPromise, {
+      loading: "Deletando...",
+      success: (response) => {
+        if (typeof response === "string") {
+          throw new Error(response);
+        }
+        return "Fornecedor deletado com sucesso";
+      },
+      error: (error) => error.message,
+    });
   }
 
   const toggleAlert = () => setOpenAlert(!openAlert);
@@ -41,4 +50,6 @@ export function EmployerRowActions({ employer }: EmployerRowActionProps) {
       </div>
     </>
   );
-}
+};
+
+export default EmployerRowActions;

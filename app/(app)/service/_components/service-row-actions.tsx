@@ -1,24 +1,34 @@
 "use client";
 
-import { useState } from "react";
-import usePromiseToast from "@/app/_hooks/toast-promise";
-import { PencilIcon, Trash2Icon } from "lucide-react";
 import { Service } from "@prisma/client";
-import { deleteService } from "../_actions/delete-service";
-import { AlertDelete } from "@/app/_components/alert-delete";
+import { PencilIcon, Trash2Icon } from "lucide-react";
 import Link from "next/link";
+import { useState } from "react";
+import { toast } from "sonner";
+
+import AlertDelete from "@/app/_components/alert-delete";
+
+import { deleteService } from "../_actions/delete-service";
 
 interface ServiceRowActionProps {
   service: Service;
 }
 
-export function ServiceRowActions({ service }: ServiceRowActionProps) {
-  const toastPromise = usePromiseToast();
+const ServiceRowActions = ({ service }: ServiceRowActionProps) => {
   const [openAlert, setOpenAlert] = useState(false);
 
   async function handleDelete() {
     const deleteServicePromise = deleteService(service.uuid);
-    toastPromise.promise(deleteServicePromise, "delete");
+    toast.promise(deleteServicePromise, {
+      loading: "Deletando...",
+      success: (response) => {
+        if (typeof response === "string") {
+          throw new Error(response);
+        }
+        return "Serviço deletado com sucesso";
+      },
+      error: (error) => error.message,
+    });
     setOpenAlert(false);
   }
 
@@ -27,7 +37,7 @@ export function ServiceRowActions({ service }: ServiceRowActionProps) {
   return (
     <>
       <AlertDelete
-        title="servicee"
+        title="Serviço"
         open={openAlert}
         toggleAlert={toggleAlert}
         handleDelete={handleDelete}
@@ -41,4 +51,6 @@ export function ServiceRowActions({ service }: ServiceRowActionProps) {
       </div>
     </>
   );
-}
+};
+
+export default ServiceRowActions;

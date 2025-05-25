@@ -8,10 +8,10 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
-import { ComboboxInput } from "@/app/_components/inputs/combobox-input";
+import InputCombobox from "@/app/_components/inputs/input-combobox";
 import InputDate from "@/app/_components/inputs/input-date";
-import { InputField } from "@/app/_components/inputs/input-field";
-import InputScheduleService from "@/app/_components/inputs/schedule-service/schedule-service";
+import InputField from "@/app/_components/inputs/input-field";
+import InputScheduleService from "@/app/_components/inputs/schedule-service/input-schedule-service";
 import { Button } from "@/app/_components/ui/button";
 import {
   Form,
@@ -185,7 +185,7 @@ const FormSchedule = ({ schedule, clients, services }: FormRecordProps) => {
             description="Modelo"
             name="model"
           />
-          <ComboboxInput
+          <InputCombobox
             control={form.control}
             description="Marca"
             name="brand"
@@ -202,7 +202,7 @@ const FormSchedule = ({ schedule, clients, services }: FormRecordProps) => {
             type="number"
           />
           <InputField control={form.control} description="Cor" name="color" />
-          {/* <ComboboxInput
+          {/* <InputCombobox
             control={form.control}
             description="Serviço"
             name="serviceUuid"
@@ -212,7 +212,7 @@ const FormSchedule = ({ schedule, clients, services }: FormRecordProps) => {
               name: services.name,
             }))}
           /> */}
-          <ComboboxInput
+          <InputCombobox
             control={form.control}
             description="Cliente"
             name="clientUuid"

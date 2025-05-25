@@ -19,12 +19,12 @@ interface DataTableColumnHeaderProps<TData, TValue>
   align?: "start" | "center" | "end";
 }
 
-export function DataTableColumnHeader<TData, TValue>({
+const DataTableColumnHeader = <TData, TValue>({
   column,
   title,
   className,
   align = "center",
-}: DataTableColumnHeaderProps<TData, TValue>) {
+}: DataTableColumnHeaderProps<TData, TValue>) => {
   if (!column.getCanSort()) {
     return (
       <div className={cn(`flex items-center justify-${align}`, className)}>
@@ -72,6 +72,6 @@ export function DataTableColumnHeader<TData, TValue>({
       </DropdownMenu>
     </div>
   );
-}
+};
 
 export default DataTableColumnHeader;

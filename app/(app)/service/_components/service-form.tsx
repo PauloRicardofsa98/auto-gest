@@ -5,12 +5,12 @@ import { Service } from "@prisma/client";
 import { Plus, Upload } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 
-import { InputField } from "@/app/_components/inputs/input-field";
-import { InputPrice } from "@/app/_components/inputs/input-price";
+import InputField from "@/app/_components/inputs/input-field";
+import InputPrice from "@/app/_components/inputs/input-price";
 import { Button } from "@/app/_components/ui/button";
 import { Form } from "@/app/_components/ui/form";
-import usePromiseToast from "@/app/_hooks/toast-promise";
 import { doubleFormat } from "@/app/_utils/helper";
 
 import { createService } from "../_actions/create-service";
@@ -21,9 +21,8 @@ interface FormProps {
   service?: Service;
 }
 
-export const FormService = ({ service }: FormProps) => {
+const FormService = ({ service }: FormProps) => {
   const router = useRouter();
-  const toastPromise = usePromiseToast();
 
   const form = useForm<ServiceProps>({
     resolver: zodResolver(serviceSchema),
@@ -39,26 +38,22 @@ export const FormService = ({ service }: FormProps) => {
       price: doubleFormat(data.price),
     };
 
-    if (service) {
-      const { uuid } = service;
-      const update = updateService(uuid, dataFormatted).then((response) => {
-        if (typeof response !== "string") {
-          router.push("/service");
-          form.reset();
+    const promise = service
+      ? updateService(service.uuid, dataFormatted)
+      : createService(dataFormatted);
+
+    toast.promise(promise, {
+      loading: "Salvando...",
+      success: (response) => {
+        if (typeof response === "string") {
+          throw new Error(response);
         }
-        return response;
-      });
-      toastPromise.promise(update, "update");
-    } else {
-      const create = createService(dataFormatted).then((response) => {
-        if (typeof response !== "string") {
-          router.push("/service");
-          form.reset();
-        }
-        return response;
-      });
-      toastPromise.promise(create, "create");
-    }
+        router.push("/service");
+        form.reset();
+        return "Serviço salvo com sucesso";
+      },
+      error: (error) => error.message,
+    });
   }
 
   return (
@@ -100,3 +95,5 @@ export const FormService = ({ service }: FormProps) => {
     </Form>
   );
 };
+
+export default FormService;

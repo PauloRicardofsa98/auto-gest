@@ -1,5 +1,7 @@
 "use client";
 
+import { Bar, BarChart, CartesianGrid, LabelList, XAxis } from "recharts";
+
 import {
   Card,
   CardContent,
@@ -12,7 +14,6 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/app/_components/ui/chart";
-import { Bar, BarChart, CartesianGrid, LabelList, XAxis } from "recharts";
 
 interface monthlyRevenue {
   monthlyRevenue: {

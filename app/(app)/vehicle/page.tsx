@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { DataTable } from "@/app/_components/table/data-table";
+import DataTable from "@/app/_components/table/data-table";
 import { Button } from "@/app/_components/ui/button";
 import {
   Card,
@@ -10,22 +10,18 @@ import {
   CardTitle,
 } from "@/app/_components/ui/card";
 import { listVehicles } from "@/app/_data/vehicle";
-import { getPeriod } from "@/app/_utils/helper";
 
 import { vehicleColumns } from "./_components/vehicle-columns";
 
 const VehiclePage = async ({
   searchParams,
 }: {
-  searchParams: Promise<{ period: string; vehicleUuid: string }>;
+  searchParams: Promise<{ vehicleUuid: string }>;
 }) => {
-  const { vehicleUuid, period } = await searchParams;
-
-  const filterPeriod = getPeriod(period);
+  const { vehicleUuid } = await searchParams;
 
   const vehicles = await listVehicles({
     where: {
-      AND: filterPeriod,
       uuid: vehicleUuid,
     },
     include: {
@@ -50,7 +46,6 @@ const VehiclePage = async ({
           columns={vehicleColumns}
           data={vehicles}
           filterInput={{ name: "name", title: "Nome" }}
-          pageFilterPeriod="vehicle"
         />
       </CardContent>
     </Card>

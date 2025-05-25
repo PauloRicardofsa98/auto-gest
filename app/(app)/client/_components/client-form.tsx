@@ -7,8 +7,8 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
-import { InputCpfCnpj } from "@/app/_components/inputs/input-cpf-cnpj";
-import { InputField } from "@/app/_components/inputs/input-field";
+import InputCpfCnpj from "@/app/_components/inputs/input-cpf-cnpj";
+import InputField from "@/app/_components/inputs/input-field";
 import { Button } from "@/app/_components/ui/button";
 import { Form } from "@/app/_components/ui/form";
 import { maskCpfCnpj, removeMask } from "@/app/_utils/helper";
@@ -22,7 +22,7 @@ interface FormProps {
   client: Client | null;
 }
 
-export const FormClient = ({ client }: FormProps) => {
+const FormClient = ({ client }: FormProps) => {
   const router = useRouter();
 
   const form = useForm<CreateClientProps>({
@@ -121,3 +121,5 @@ export const FormClient = ({ client }: FormProps) => {
     </Form>
   );
 };
+
+export default FormClient;

@@ -4,9 +4,9 @@ import { Client } from "@prisma/client";
 import { PencilIcon, Trash2Icon } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
+import { toast } from "sonner";
 
-import { AlertDelete } from "@/app/_components/alert-delete";
-import usePromiseToast from "@/app/_hooks/toast-promise";
+import AlertDelete from "@/app/_components/alert-delete";
 
 import { deleteClient } from "../_actions/delete-client";
 
@@ -14,14 +14,23 @@ interface ClientRowActionProps {
   client: Client;
 }
 
-export function ClientRowActions({ client }: ClientRowActionProps) {
-  const toastPromise = usePromiseToast();
+const ClientRowActions = ({ client }: ClientRowActionProps) => {
   const [openAlert, setOpenAlert] = useState(false);
 
   async function handleDelete() {
-    const deleteClientPromise = deleteClient(client.uuid);
-    toastPromise.promise(deleteClientPromise, "delete");
-    setOpenAlert(false);
+    const promise = deleteClient(client.uuid);
+
+    toast.promise(promise, {
+      loading: "Deletando cliente...",
+      success: (response) => {
+        if (typeof response === "string") {
+          throw new Error(response);
+        }
+        setOpenAlert(false);
+        return "Cliente deletado com sucesso";
+      },
+      error: (error) => error.message,
+    });
   }
 
   const toggleAlert = () => setOpenAlert(!openAlert);
@@ -43,4 +52,6 @@ export function ClientRowActions({ client }: ClientRowActionProps) {
       </div>
     </>
   );
-}
+};
+
+export default ClientRowActions;

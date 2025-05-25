@@ -1,3 +1,8 @@
+import { Client } from "@prisma/client";
+import { MessageCircleMoreIcon } from "lucide-react";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
+
 import { Button } from "@/app/_components/ui/button";
 import {
   Dialog,
@@ -14,10 +19,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/app/_components/ui/tooltip";
-import usePromiseToast from "@/app/_hooks/toast-promise";
-import { Client } from "@prisma/client";
-import { MessageCircleMoreIcon } from "lucide-react";
-import { useEffect, useState } from "react";
+
 import { updateClient } from "../_actions/update-client";
 
 interface ObsClientProps {
@@ -25,7 +27,6 @@ interface ObsClientProps {
 }
 
 const ObsClient = ({ client }: ObsClientProps) => {
-  const toastPromise = usePromiseToast();
   const [open, setOpen] = useState(false);
   const [observations, setObservation] = useState(client.observations);
 
@@ -35,15 +36,21 @@ const ObsClient = ({ client }: ObsClientProps) => {
   }, [open]);
 
   async function onSubmit() {
-    const update = updateClient(client.uuid, {
+    const promise = updateClient(client.uuid, {
       observations: observations,
-    }).then((response) => {
-      if (typeof response !== "string") {
-        setOpen(false);
-      }
-      return response;
     });
-    toastPromise.promise(update, "update");
+
+    toast.promise(promise, {
+      loading: "Atualizando observação...",
+      success: (response) => {
+        if (typeof response === "string") {
+          throw new Error(response);
+        }
+        setOpen(false);
+        return "Observação atualizada com sucesso";
+      },
+      error: (error) => error.message,
+    });
   }
 
   return (

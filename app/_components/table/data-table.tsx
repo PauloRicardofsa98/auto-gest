@@ -12,7 +12,7 @@ import {
 } from "@tanstack/react-table";
 import { X } from "lucide-react";
 import * as React from "react";
-import { useEffect, useState } from "react";
+import { ReactElement, useEffect, useState } from "react";
 
 import {
   Table,
@@ -22,26 +22,38 @@ import {
   TableHeader,
   TableRow,
 } from "@/app/_components/ui/table";
-import { TableProps } from "@/app/_types/table";
 
 import { Button } from "../ui/button";
-import { DataTableFacetedFilter } from "./data-table-faceted-filter";
-import { DataTableFilterInput } from "./data-table-filter-input";
-import { DataTablePagination } from "./data-table-pagination";
+import DataTableFacetedFilter from "./data-table-faceted-filter";
+import DataTableFilterInput from "./data-table-filter-input";
+import DataTablePagination from "./data-table-pagination";
 
-export const DataTable = ({
-  data,
-  columns,
-  filterInput,
-  filters,
-}: TableProps) => {
+export type TableProps = {
+  data: any;
+  columns: any;
+  filterInput?: {
+    name: string;
+    title: string;
+  };
+  filters?: {
+    column: string;
+    title: string;
+    options: {
+      value: any;
+      label: string;
+      icon?: ReactElement;
+      isDefault?: boolean;
+    }[];
+  }[];
+};
+
+const DataTable = ({ data, columns, filterInput, filters }: TableProps) => {
   const [rowSelection, setRowSelection] = useState({});
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [sorting, setSorting] = useState<SortingState>([]);
 
   useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     columns.forEach((column: any) => {
       if (column.hidden)
         setColumnVisibility({

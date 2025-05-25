@@ -1,17 +1,18 @@
 "use client";
+import { Product } from "@prisma/client";
+import { ColumnDef } from "@tanstack/react-table";
 import { BoxIcon } from "lucide-react";
 
-import { ColumnDef } from "@tanstack/react-table";
+import DataTableColumnContent from "@/app/_components/table/data-table-column-content";
+import DataTableColumnHeader from "@/app/_components/table/data-table-column-header";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@/app/_components/ui/tooltip";
-import { Product } from "@prisma/client";
-import { DataTableColumnHeader } from "@/app/_components/table/data-table-column-header";
-import { DataTableColumnContent } from "@/app/_components/table/data-table-column-content";
-import { ProductRowActions } from "./product-row-actions";
+
+import ProductRowActions from "./product-row-actions";
 
 export const productColumns: ColumnDef<Product>[] = [
   {

@@ -1,24 +1,34 @@
 "use client";
 
-import { useState } from "react";
-import usePromiseToast from "@/app/_hooks/toast-promise";
-import { PencilIcon, Trash2Icon } from "lucide-react";
 import { Product } from "@prisma/client";
-import { deleteProduct } from "../_actions/delete-product";
-import { AlertDelete } from "@/app/_components/alert-delete";
+import { PencilIcon, Trash2Icon } from "lucide-react";
 import Link from "next/link";
+import { useState } from "react";
+import { toast } from "sonner";
+
+import AlertDelete from "@/app/_components/alert-delete";
+
+import { deleteProduct } from "../_actions/delete-product";
 
 interface ProductRowActionProps {
   product: Product;
 }
 
-export function ProductRowActions({ product }: ProductRowActionProps) {
-  const toastPromise = usePromiseToast();
+const ProductRowActions = ({ product }: ProductRowActionProps) => {
   const [openAlert, setOpenAlert] = useState(false);
 
   async function handleDelete() {
     const deleteProductPromise = deleteProduct(product.uuid);
-    toastPromise.promise(deleteProductPromise, "delete");
+    toast.promise(deleteProductPromise, {
+      loading: "Deletando...",
+      success: (response) => {
+        if (typeof response === "string") {
+          throw new Error(response);
+        }
+        return "Produto deletado com sucesso";
+      },
+      error: (error) => error.message,
+    });
     setOpenAlert(false);
   }
 
@@ -27,7 +37,7 @@ export function ProductRowActions({ product }: ProductRowActionProps) {
   return (
     <>
       <AlertDelete
-        title="producte"
+        title="produto"
         open={openAlert}
         toggleAlert={toggleAlert}
         handleDelete={handleDelete}
@@ -41,4 +51,6 @@ export function ProductRowActions({ product }: ProductRowActionProps) {
       </div>
     </>
   );
-}
+};
+
+export default ProductRowActions;

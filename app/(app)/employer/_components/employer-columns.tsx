@@ -1,17 +1,19 @@
 "use client";
 
-import { ColumnDef } from "@tanstack/react-table";
 import { Employer } from "@prisma/client";
-import { DataTableColumnHeader } from "@/app/_components/table/data-table-column-header";
-import { DataTableColumnContent } from "@/app/_components/table/data-table-column-content";
-import { EmployerRowActions } from "./employer-row-actions";
+import { ColumnDef } from "@tanstack/react-table";
+import { ContactIcon } from "lucide-react";
+
+import DataTableColumnContent from "@/app/_components/table/data-table-column-content";
+import DataTableColumnHeader from "@/app/_components/table/data-table-column-header";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@/app/_components/ui/tooltip";
-import { ContactIcon } from "lucide-react";
+
+import EmployerRowActions from "./employer-row-actions";
 
 export const employerColumns: ColumnDef<Employer>[] = [
   {

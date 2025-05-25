@@ -21,7 +21,7 @@ interface InputEmailProps<T extends FieldValues> {
   className?: string;
   onBlur?: () => void;
 }
-export const InputField = <T extends FieldValues>({
+const InputField = <T extends FieldValues>({
   control,
   disabled,
   name,

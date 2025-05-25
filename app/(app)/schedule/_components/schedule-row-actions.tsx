@@ -4,7 +4,7 @@ import { Employer, Prisma, ScheduleStatus } from "@prisma/client";
 import { Check, ChevronsUpDown, PencilIcon } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 
 import {
   AlertDialog,
@@ -27,7 +27,6 @@ import {
   PopoverTrigger,
 } from "@/app/_components/ui/popover";
 import { listEmployers } from "@/app/_data/employer";
-import usePromiseToast from "@/app/_hooks/toast-promise";
 import { cn } from "@/app/_lib/utils";
 
 import { updateSchedule } from "../_actions/update-schedule";
@@ -48,8 +47,7 @@ interface ScheduleRowActionProps {
   schedule: ScheduleAll;
 }
 
-export function ScheduleRowActions({ schedule }: ScheduleRowActionProps) {
-  const toastPromise = usePromiseToast();
+const ScheduleRowActions = ({ schedule }: ScheduleRowActionProps) => {
   const [openCheckout, setOpenCheckout] = useState(false);
   const [open, setOpen] = useState(false);
 
@@ -67,14 +65,24 @@ export function ScheduleRowActions({ schedule }: ScheduleRowActionProps) {
     fetchEmployers();
   }, [openCheckout]);
 
-  async function handleUpdateScheduleStatus(status: ScheduleStatus) {
+  const handleUpdateScheduleStatus = (status: ScheduleStatus) => {
     const updateProductPromise = updateSchedule(schedule.uuid, {
       status,
     });
-    toastPromise.promise(updateProductPromise, "update");
+    toast.promise(updateProductPromise, {
+      loading: "Atualizando...",
+      success: (response) => {
+        if (typeof response === "string") {
+          throw new Error(response);
+        }
+        return "Atualizado com sucesso";
+      },
+      error: (error) => error.message,
+    });
     setOpenCheckout(false);
-  }
-  async function handleCheckOutSchedule() {
+  };
+
+  const handleCheckOutSchedule = () => {
     if (!selectedEmployer) {
       toast.error("Selecione o funcionário que realizou o serviço");
       return;
@@ -84,9 +92,18 @@ export function ScheduleRowActions({ schedule }: ScheduleRowActionProps) {
       status: "DONE",
       employerUuid: selectedEmployer.uuid,
     });
-    toastPromise.promise(updateProductPromise, "update");
+    toast.promise(updateProductPromise, {
+      loading: "Atualizando...",
+      success: (response) => {
+        if (typeof response === "string") {
+          throw new Error(response);
+        }
+        return "Atualizado com sucesso";
+      },
+      error: (error) => error.message,
+    });
     setOpenCheckout(false);
-  }
+  };
 
   const toggleCheckout = () => setOpenCheckout(!openCheckout);
 
@@ -172,4 +189,6 @@ export function ScheduleRowActions({ schedule }: ScheduleRowActionProps) {
       </div>
     </>
   );
-}
+};
+
+export default ScheduleRowActions;

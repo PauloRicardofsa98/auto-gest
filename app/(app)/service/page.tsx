@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { DataTable } from "@/app/_components/table/data-table";
+import DataTable from "@/app/_components/table/data-table";
 import { Button } from "@/app/_components/ui/button";
 import {
   Card,
@@ -10,21 +10,17 @@ import {
   CardTitle,
 } from "@/app/_components/ui/card";
 import { listServices } from "@/app/_data/service";
-import { getPeriod } from "@/app/_utils/helper";
 
 import { serviceColumns } from "./_components/service-columns";
 
 const ServicePage = async ({
   searchParams,
 }: {
-  searchParams: Promise<{ period: string; serviceUuid: string }>;
+  searchParams: Promise<{ serviceUuid: string }>;
 }) => {
-  const { serviceUuid, period } = await searchParams;
-
-  const filterPeriod = getPeriod(period);
+  const { serviceUuid } = await searchParams;
 
   const services = await listServices({
-    AND: filterPeriod,
     uuid: serviceUuid,
   });
 
@@ -45,7 +41,6 @@ const ServicePage = async ({
           columns={serviceColumns}
           data={services}
           filterInput={{ name: "name", title: "Nome" }}
-          pageFilterPeriod="service"
         />
       </CardContent>
     </Card>

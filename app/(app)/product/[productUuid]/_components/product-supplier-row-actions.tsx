@@ -1,10 +1,12 @@
 "use client";
 
-import { useState } from "react";
-import usePromiseToast from "@/app/_hooks/toast-promise";
-import { PencilIcon, Trash2Icon } from "lucide-react";
 import { Prisma } from "@prisma/client";
-import { AlertDelete } from "@/app/_components/alert-delete";
+import { PencilIcon, Trash2Icon } from "lucide-react";
+import { useState } from "react";
+import { toast } from "sonner";
+
+import AlertDelete from "@/app/_components/alert-delete";
+
 import { deleteProductSupplier } from "../_actions/delete-product-supplier";
 import ManagerProductSupplier from "./manager-product-supplier";
 
@@ -15,15 +17,23 @@ interface ProductSupplierRowActionProps {
   productSupplier: ProductSupplierAll;
 }
 
-export function ProductSupplierRowActions({
+const ProductSupplierRowActions = ({
   productSupplier,
-}: ProductSupplierRowActionProps) {
-  const toastPromise = usePromiseToast();
+}: ProductSupplierRowActionProps) => {
   const [openAlert, setOpenAlert] = useState(false);
 
   async function handleDelete() {
     const deleteProductPromise = deleteProductSupplier(productSupplier.uuid);
-    toastPromise.promise(deleteProductPromise, "delete");
+    toast.promise(deleteProductPromise, {
+      loading: "Deletando...",
+      success: (response) => {
+        if (typeof response === "string") {
+          throw new Error(response);
+        }
+        return "Fornecedor deletado com sucesso";
+      },
+      error: (error) => error.message,
+    });
     setOpenAlert(false);
   }
 
@@ -49,4 +59,6 @@ export function ProductSupplierRowActions({
       </div>
     </>
   );
-}
+};
+
+export default ProductSupplierRowActions;

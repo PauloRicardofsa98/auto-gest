@@ -6,11 +6,11 @@ interface DataTableColumnContentProps extends HTMLAttributes<HTMLDivElement> {
   align?: "start" | "center" | "end";
 }
 
-export function DataTableColumnContent({
+const DataTableColumnContent = ({
   className,
   align = "center",
   children,
-}: DataTableColumnContentProps) {
+}: DataTableColumnContentProps) => {
   return (
     <div
       className={cn(`flex items-center justify-${align} truncate`, className)}
@@ -18,6 +18,6 @@ export function DataTableColumnContent({
       {children}
     </div>
   );
-}
+};
 
 export default DataTableColumnContent;

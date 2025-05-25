@@ -3,8 +3,8 @@ import { Client } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
 import { Contact } from "lucide-react";
 
-import { DataTableColumnContent } from "@/app/_components/table/data-table-column-content";
-import { DataTableColumnHeader } from "@/app/_components/table/data-table-column-header";
+import DataTableColumnContent from "@/app/_components/table/data-table-column-content";
+import DataTableColumnHeader from "@/app/_components/table/data-table-column-header";
 import {
   Tooltip,
   TooltipContent,
@@ -13,7 +13,7 @@ import {
 } from "@/app/_components/ui/tooltip";
 import { maskCpfCnpj } from "@/app/_utils/helper";
 
-import { ClientRowActions } from "./client-row-actions";
+import ClientRowActions from "./client-row-actions";
 import ObsClient from "./obs-client";
 
 export const clientColumns: ColumnDef<Client>[] = [

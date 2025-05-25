@@ -17,22 +17,6 @@ export const cn = (...inputs: ClassValue[]) => {
   return twMerge(clsx(inputs));
 };
 
-export const getPeriod = (period: string) => {
-  try {
-    const [firstDateString, lastDateString] = period.split("_");
-    const initialDate = new Date(firstDateString);
-    const finalDate = new Date(lastDateString);
-    return {
-      createdAt: {
-        gte: initialDate,
-        lte: finalDate,
-      },
-    };
-  } catch {
-    return undefined;
-  }
-};
-
 export const maskCpfCnpj = (v: string) => {
   v = v.replace(/\D/g, "");
 
@@ -140,5 +124,24 @@ export const getFilterPeriod = (
 
     default:
       throw new Error("Invalid filter period");
+  }
+};
+
+export const applyPlateMask = (value: string): string => {
+  const len = value.length;
+
+  if (len === 0) {
+    return "";
+  }
+
+  const isPotentialMercosul = len >= 5 && /[A-Z]/.test(value[4]);
+
+  if (isPotentialMercosul) {
+    return value;
+  } else {
+    if (len <= 3) {
+      return value;
+    }
+    return `${value.substring(0, 3)}-${value.substring(3)}`;
   }
 };

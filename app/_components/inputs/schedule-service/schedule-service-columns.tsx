@@ -3,7 +3,7 @@
 import { Service } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
 
-import { DataTableColumnHeader } from "@/app/_components/table/data-table-column-header";
+import DataTableColumnHeader from "@/app/_components/table/data-table-column-header";
 import { Checkbox } from "@/app/_components/ui/checkbox";
 import { currencyFormat } from "@/app/_utils/helper";
 

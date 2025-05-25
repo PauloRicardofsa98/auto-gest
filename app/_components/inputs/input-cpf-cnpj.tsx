@@ -18,7 +18,7 @@ interface InputCpfCnpjProps<T extends FieldValues> {
   label?: string;
 }
 
-export const InputCpfCnpj = <T extends FieldValues>({
+const InputCpfCnpj = <T extends FieldValues>({
   control,
   name,
   label = "CPF ou CNPJ",

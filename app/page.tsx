@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 
 import { Button } from "./_components/ui/button";
 
-export default async function Home() {
+const HomePage = async () => {
   const { userId } = await auth();
 
   if (userId) {
@@ -31,4 +31,6 @@ export default async function Home() {
       </div>
     </div>
   );
-}
+};
+
+export default HomePage;

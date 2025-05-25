@@ -1,12 +1,14 @@
+import { Product } from "@prisma/client";
+
 import {
   Card,
-  CardHeader,
-  CardTitle,
   CardContent,
   CardDescription,
+  CardHeader,
+  CardTitle,
 } from "@/app/_components/ui/card";
-import { Product } from "@prisma/client";
-import { FormProduct } from "../../_components/product-form";
+
+import FormProduct from "../../_components/product-form";
 
 interface TabProductSuppliersProps {
   product?: Product;

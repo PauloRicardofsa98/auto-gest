@@ -9,19 +9,10 @@ import {
 } from "@/app/_components/ui/card";
 import { listClients } from "@/app/_data/client";
 import { listServices } from "@/app/_data/service";
-import { getPeriod } from "@/app/_utils/helper";
 
 import ScheduleCore from "./_components/schedule-core";
 
-const SchedulePage = async ({
-  searchParams,
-}: {
-  searchParams: Promise<{ period: string }>;
-}) => {
-  const { period } = await searchParams;
-
-  const filterPeriod = getPeriod(period);
-  console.log(filterPeriod);
+const SchedulePage = async () => {
   const [clients, services] = await Promise.all([
     listClients(),
     listServices(),
@@ -33,7 +24,6 @@ const SchedulePage = async ({
         <div>
           <CardTitle>Agendamentos</CardTitle>
         </div>
-        {/* <ManagerSchedule clients={clients} services={services} /> */}
         <Button asChild>
           <Link href="/schedule/new">Novo Agendamento</Link>
         </Button>

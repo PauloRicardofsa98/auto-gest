@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { DataTable } from "@/app/_components/table/data-table";
+import DataTable from "@/app/_components/table/data-table";
 import { Button } from "@/app/_components/ui/button";
 import {
   Card,
@@ -10,21 +10,16 @@ import {
   CardTitle,
 } from "@/app/_components/ui/card";
 import { listCategoryProducts } from "@/app/_data/category-product";
-import { getPeriod } from "@/app/_utils/helper";
 
 import { categoryProductColumns } from "./_components/category-product-columns";
 
 const CategoryProductPage = async ({
   searchParams,
 }: {
-  searchParams: Promise<{ period: string; categoryProductUuid: string }>;
+  searchParams: Promise<{ categoryProductUuid: string }>;
 }) => {
-  const { categoryProductUuid, period } = await searchParams;
-
-  const filterPeriod = getPeriod(period);
-
+  const { categoryProductUuid } = await searchParams;
   const categories = await listCategoryProducts({
-    AND: filterPeriod,
     uuid: categoryProductUuid,
   });
 
@@ -45,7 +40,6 @@ const CategoryProductPage = async ({
           columns={categoryProductColumns}
           data={categories}
           filterInput={{ name: "name", title: "Nome" }}
-          pageFilterPeriod="category-product"
         />
       </CardContent>
     </Card>

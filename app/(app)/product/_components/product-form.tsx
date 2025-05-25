@@ -5,13 +5,13 @@ import { Product, Unit } from "@prisma/client";
 import { Plus, Upload } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 
-import { ComboboxInput } from "@/app/_components/inputs/input-combobox";
-import { InputField } from "@/app/_components/inputs/input-field";
-import { InputPrice } from "@/app/_components/inputs/input-price";
+import InputCombobox from "@/app/_components/inputs/input-combobox";
+import InputField from "@/app/_components/inputs/input-field";
+import InputPrice from "@/app/_components/inputs/input-price";
 import { Button } from "@/app/_components/ui/button";
 import { Form } from "@/app/_components/ui/form";
-import usePromiseToast from "@/app/_hooks/toast-promise";
 
 import { createProduct } from "../_actions/create-product";
 import { ProductProps, productSchema } from "../_actions/product-schema";
@@ -21,9 +21,8 @@ interface FormProps {
   product?: Product;
 }
 
-export const FormProduct = ({ product }: FormProps) => {
+const FormProduct = ({ product }: FormProps) => {
   const router = useRouter();
-  const toastPromise = usePromiseToast();
 
   const form = useForm<ProductProps>({
     resolver: zodResolver(productSchema),
@@ -51,26 +50,24 @@ export const FormProduct = ({ product }: FormProps) => {
       barcode: data.barcode,
     };
 
-    if (product) {
-      const { uuid } = product;
-      const update = updateProduct(uuid, dataFormatted).then((response) => {
-        if (typeof response !== "string") {
-          router.push("/product");
-          form.reset();
+    const promise = product
+      ? updateProduct(product.uuid, dataFormatted)
+      : createProduct(dataFormatted);
+
+    toast.promise(promise, {
+      loading: product ? "Atualizando..." : "Criando...",
+      success: (response) => {
+        if (typeof response === "string") {
+          throw new Error(response);
         }
-        return response;
-      });
-      toastPromise.promise(update, "update");
-    } else {
-      const create = createProduct(dataFormatted).then((response) => {
-        if (typeof response !== "string") {
-          router.push("/product");
-          form.reset();
-        }
-        return response;
-      });
-      toastPromise.promise(create, "create");
-    }
+        router.push("/product");
+        form.reset();
+        return product
+          ? "Produto atualizado com sucesso"
+          : "Produto criado com sucesso";
+      },
+      error: (error) => error.message,
+    });
   }
 
   return (
@@ -91,7 +88,7 @@ export const FormProduct = ({ product }: FormProps) => {
             type="number"
           />
           <InputPrice control={form.control} description="Preço" name="price" />
-          <ComboboxInput
+          <InputCombobox
             control={form.control}
             form={form}
             description="Unidade"
@@ -147,3 +144,5 @@ export const FormProduct = ({ product }: FormProps) => {
     </Form>
   );
 };
+
+export default FormProduct;

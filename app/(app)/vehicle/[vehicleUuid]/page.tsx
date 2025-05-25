@@ -1,4 +1,3 @@
-import { getVehicle } from "@/app/_data/vehicle";
 import {
   Card,
   CardContent,
@@ -6,10 +5,12 @@ import {
   CardHeader,
   CardTitle,
 } from "@/app/_components/ui/card";
-import { FormVehicle } from "../../vehicle/_components/vehicle-form";
 import { listClients } from "@/app/_data/client";
+import { getVehicle } from "@/app/_data/vehicle";
 
-const ManagerVehicle = async ({
+import FormVehicle from "../../vehicle/_components/vehicle-form";
+
+const ManagerVehiclePage = async ({
   params,
 }: {
   params: Promise<{ vehicleUuid: string }>;
@@ -33,4 +34,4 @@ const ManagerVehicle = async ({
   );
 };
 
-export default ManagerVehicle;
+export default ManagerVehiclePage;

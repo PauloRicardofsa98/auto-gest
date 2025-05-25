@@ -3,7 +3,6 @@ import "./globals.css";
 import { ptBR } from "@clerk/localizations";
 import { ClerkProvider } from "@clerk/nextjs";
 import type { Metadata } from "next";
-import { ToastContainer } from "react-toastify";
 
 import { Toaster } from "@/app/_components/ui/sonner";
 
@@ -22,7 +21,6 @@ export default function RootLayout({
       <body className={`antialiased`}>
         <ClerkProvider localization={ptBR}>
           {children}
-          <ToastContainer position="top-center" />
           <Toaster />
         </ClerkProvider>
       </body>

@@ -1,17 +1,17 @@
 import { UserButton } from "@clerk/nextjs";
 
-import { AppSidebar } from "../_components/app-sidebar";
+import AppSidebar from "../_components/app-sidebar";
 import {
   SidebarInset,
   SidebarProvider,
   SidebarTrigger,
 } from "../_components/ui/sidebar";
 
-export default function RootLayout({
+const RootLayout = ({
   children,
 }: Readonly<{
   children: React.ReactNode;
-}>) {
+}>) => {
   return (
     <SidebarProvider className="overflow-hidden">
       <AppSidebar className="bg-black text-white" />
@@ -27,4 +27,6 @@ export default function RootLayout({
       </SidebarInset>
     </SidebarProvider>
   );
-}
+};
+
+export default RootLayout;

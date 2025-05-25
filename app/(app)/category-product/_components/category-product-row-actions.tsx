@@ -1,28 +1,38 @@
 "use client";
 
-import { useState } from "react";
-import usePromiseToast from "@/app/_hooks/toast-promise";
-import { PencilIcon, Trash2Icon } from "lucide-react";
 import { CategoryProduct } from "@prisma/client";
-import { deleteCategoryProduct } from "../_actions/delete-category-product";
-import { AlertDelete } from "@/app/_components/alert-delete";
+import { PencilIcon, Trash2Icon } from "lucide-react";
 import Link from "next/link";
+import { useState } from "react";
+import { toast } from "sonner";
+
+import AlertDelete from "@/app/_components/alert-delete";
+
+import { deleteCategoryProduct } from "../_actions/delete-category-product";
 
 interface CategoryProductRowActionProps {
   categoryProduct: CategoryProduct;
 }
 
-export function CategoryProductRowActions({
+const CategoryProductRowActions = ({
   categoryProduct,
-}: CategoryProductRowActionProps) {
-  const toastPromise = usePromiseToast();
+}: CategoryProductRowActionProps) => {
   const [openAlert, setOpenAlert] = useState(false);
 
   async function handleDelete() {
     const deleteCategoryProductPromise = deleteCategoryProduct(
       categoryProduct.uuid,
     );
-    toastPromise.promise(deleteCategoryProductPromise, "delete");
+    toast.promise(deleteCategoryProductPromise, {
+      loading: "Deletando categoria...",
+      success: (response) => {
+        if (typeof response === "string") {
+          throw new Error(response);
+        }
+        return "Categoria deletada com sucesso!";
+      },
+      error: (error) => error.message,
+    });
     setOpenAlert(false);
   }
 
@@ -45,4 +55,6 @@ export function CategoryProductRowActions({
       </div>
     </>
   );
-}
+};
+
+export default CategoryProductRowActions;

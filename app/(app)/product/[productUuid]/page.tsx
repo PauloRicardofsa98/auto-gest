@@ -1,14 +1,15 @@
-import { getProduct } from "@/app/_data/product";
 import {
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
 } from "@/app/_components/ui/tabs";
-import TabProductSuppliers from "./_components/tab-suppliers";
-import TabFeature from "./_components/tab-feature";
+import { getProduct } from "@/app/_data/product";
 
-const ManagerProduct = async ({
+import TabFeature from "./_components/tab-feature";
+import TabProductSuppliers from "./_components/tab-suppliers";
+
+const ManagerProductPage = async ({
   params,
 }: {
   params: Promise<{ productUuid: string }>;
@@ -34,4 +35,4 @@ const ManagerProduct = async ({
   );
 };
 
-export default ManagerProduct;
+export default ManagerProductPage;

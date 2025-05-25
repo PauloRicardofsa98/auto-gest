@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { DataTable } from "@/app/_components/table/data-table";
+import DataTable from "@/app/_components/table/data-table";
 import { Button } from "@/app/_components/ui/button";
 import {
   Card,
@@ -10,21 +10,17 @@ import {
   CardTitle,
 } from "@/app/_components/ui/card";
 import { listEmployers } from "@/app/_data/employer";
-import { getPeriod } from "@/app/_utils/helper";
 
 import { employerColumns } from "./_components/employer-columns";
 
 const EmployerPage = async ({
   searchParams,
 }: {
-  searchParams: Promise<{ period: string; employerUuid: string }>;
+  searchParams: Promise<{ employerUuid: string }>;
 }) => {
-  const { employerUuid, period } = await searchParams;
-
-  const filterPeriod = getPeriod(period);
+  const { employerUuid } = await searchParams;
 
   const employers = await listEmployers({
-    AND: filterPeriod,
     uuid: employerUuid,
   });
 

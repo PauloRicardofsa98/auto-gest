@@ -5,12 +5,12 @@ import { Employer, Prisma } from "@prisma/client";
 import { Plus, Upload } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 
-import { InputCpfCnpj } from "@/app/_components/inputs/input-cpf-cnpj";
-import { InputField } from "@/app/_components/inputs/input-field";
+import InputCpfCnpj from "@/app/_components/inputs/input-cpf-cnpj";
+import InputField from "@/app/_components/inputs/input-field";
 import { Button } from "@/app/_components/ui/button";
 import { Form } from "@/app/_components/ui/form";
-import usePromiseToast from "@/app/_hooks/toast-promise";
 import { maskCpfCnpj, removeMask } from "@/app/_utils/helper";
 
 import { createEmployer } from "../_actions/create-employer";
@@ -21,9 +21,8 @@ interface FormProps {
   employer?: Employer;
 }
 
-export const FormEmployer = ({ employer }: FormProps) => {
+const FormEmployer = ({ employer }: FormProps) => {
   const router = useRouter();
-  const toastPromise = usePromiseToast();
 
   const form = useForm<EmployerProps>({
     resolver: zodResolver(employerSchema),
@@ -45,26 +44,24 @@ export const FormEmployer = ({ employer }: FormProps) => {
       email: data.email,
     };
 
-    if (employer) {
-      const { uuid } = employer;
-      const update = updateEmployer(uuid, dataFormatted).then((response) => {
-        if (typeof response !== "string") {
-          router.push("/employer");
-          form.reset();
+    const promise = employer
+      ? updateEmployer(employer.uuid, dataFormatted)
+      : createEmployer(dataFormatted);
+
+    toast.promise(promise, {
+      loading: employer ? "Atualizando..." : "Criando...",
+      success: (response) => {
+        if (typeof response === "string") {
+          throw new Error(response);
         }
-        return response;
-      });
-      toastPromise.promise(update, "update");
-    } else {
-      const create = createEmployer(dataFormatted).then((response) => {
-        if (typeof response !== "string") {
-          router.push("/employer");
-          form.reset();
-        }
-        return response;
-      });
-      toastPromise.promise(create, "create");
-    }
+        router.push("/employer");
+        form.reset();
+        return employer
+          ? "Fornecedor atualizado com sucesso"
+          : "Fornecedor criado com sucesso";
+      },
+      error: (error) => error.message,
+    });
   }
 
   return (
@@ -119,3 +116,5 @@ export const FormEmployer = ({ employer }: FormProps) => {
     </Form>
   );
 };
+
+export default FormEmployer;

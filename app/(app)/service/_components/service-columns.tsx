@@ -1,10 +1,12 @@
 "use client";
 
-import { ColumnDef } from "@tanstack/react-table";
 import { Service } from "@prisma/client";
-import { DataTableColumnHeader } from "@/app/_components/table/data-table-column-header";
-import { DataTableColumnContent } from "@/app/_components/table/data-table-column-content";
-import { ServiceRowActions } from "./service-row-actions";
+import { ColumnDef } from "@tanstack/react-table";
+
+import DataTableColumnContent from "@/app/_components/table/data-table-column-content";
+import DataTableColumnHeader from "@/app/_components/table/data-table-column-header";
+
+import ServiceRowActions from "./service-row-actions";
 
 export const serviceColumns: ColumnDef<Service>[] = [
   {

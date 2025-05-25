@@ -1,10 +1,12 @@
 "use client";
 
-import { ColumnDef } from "@tanstack/react-table";
 import { Prisma } from "@prisma/client";
-import { DataTableColumnHeader } from "@/app/_components/table/data-table-column-header";
-import { DataTableColumnContent } from "@/app/_components/table/data-table-column-content";
-import { VehicleRowActions } from "./vehicle-row-actions";
+import { ColumnDef } from "@tanstack/react-table";
+
+import DataTableColumnContent from "@/app/_components/table/data-table-column-content";
+import DataTableColumnHeader from "@/app/_components/table/data-table-column-header";
+
+import VehicleRowActions from "./vehicle-row-actions";
 
 type VehicleAll = Prisma.VehicleGetPayload<{
   include: { client: true };

@@ -7,9 +7,9 @@ import {
 } from "@/app/_components/ui/card";
 import { getClient } from "@/app/_data/client";
 
-import { FormClient } from "../_components/client-form";
+import FormClient from "../_components/client-form";
 
-const ManagerClient = async ({
+const ManagerClientPage = async ({
   params,
 }: {
   params: Promise<{ clientUuid: string }>;
@@ -30,4 +30,4 @@ const ManagerClient = async ({
   );
 };
 
-export default ManagerClient;
+export default ManagerClientPage;

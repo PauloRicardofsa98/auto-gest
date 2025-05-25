@@ -1,8 +1,10 @@
-import { FieldValues, Control, Path } from "react-hook-form";
-import { FormField, FormItem, FormLabel, FormControl } from "../ui/form";
 import { HTMLInputTypeAttribute } from "react";
+import { Control, FieldValues, Path } from "react-hook-form";
+
 import { cn } from "@/app/_lib/utils";
+
 import { Checkbox } from "../ui/checkbox";
+import { FormControl, FormField, FormItem, FormLabel } from "../ui/form";
 
 interface InputCheckboxProps<T extends FieldValues> {
   control: Control<T>;
@@ -14,7 +16,7 @@ interface InputCheckboxProps<T extends FieldValues> {
   className?: string;
   onBlur?: () => void;
 }
-export const InputCheckbox = <T extends FieldValues>({
+const InputCheckbox = <T extends FieldValues>({
   control,
   disabled,
   name,
@@ -46,3 +48,5 @@ export const InputCheckbox = <T extends FieldValues>({
     />
   );
 };
+
+export default InputCheckbox;

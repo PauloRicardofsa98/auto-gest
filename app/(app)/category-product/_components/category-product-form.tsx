@@ -1,28 +1,29 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { Button } from "@/app/_components/ui/button";
-import { Form } from "@/app/_components/ui/form";
+import { CategoryProduct } from "@prisma/client";
 import { Plus, Upload } from "lucide-react";
 import { useRouter } from "next/navigation";
-import usePromiseToast from "@/app/_hooks/toast-promise";
-import { CategoryProduct } from "@prisma/client";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+
+import InputField from "@/app/_components/inputs/input-field";
+import { Button } from "@/app/_components/ui/button";
+import { Form } from "@/app/_components/ui/form";
+
 import {
   CategoryProductProps,
   categoryProductSchema,
 } from "../_actions/category-product-schema";
-import { InputField } from "@/app/_components/inputs/input-field";
-import { updateCategoryProduct } from "../_actions/update-category-product";
 import { createCategoryProduct } from "../_actions/create-category-product";
+import { updateCategoryProduct } from "../_actions/update-category-product";
 
 interface FormProps {
   categoryProduct: CategoryProduct | null;
 }
 
-export const FormCategoryProduct = ({ categoryProduct }: FormProps) => {
+const FormCategoryProduct = ({ categoryProduct }: FormProps) => {
   const router = useRouter();
-  const toastPromise = usePromiseToast();
 
   const form = useForm<CategoryProductProps>({
     resolver: zodResolver(categoryProductSchema),
@@ -32,26 +33,26 @@ export const FormCategoryProduct = ({ categoryProduct }: FormProps) => {
   });
 
   async function onSubmit(data: CategoryProductProps) {
-    if (categoryProduct) {
-      const { uuid } = categoryProduct;
-      const update = updateCategoryProduct(uuid, data).then((response) => {
-        if (typeof response !== "string") {
-          router.push("/category-product");
-          form.reset();
+    const promise = categoryProduct
+      ? updateCategoryProduct(categoryProduct.uuid, data)
+      : createCategoryProduct(data);
+
+    toast.promise(promise, {
+      loading: categoryProduct
+        ? "Atualizando categoria..."
+        : "Criando categoria...",
+      success: (response) => {
+        if (typeof response === "string") {
+          throw new Error(response);
         }
-        return response;
-      });
-      toastPromise.promise(update, "update");
-    } else {
-      const create = createCategoryProduct(data).then((response) => {
-        if (typeof response !== "string") {
-          router.push("/category-product");
-          form.reset();
-        }
-        return response;
-      });
-      toastPromise.promise(create, "create");
-    }
+        router.push("/category-product");
+        form.reset();
+        return categoryProduct
+          ? "Categoria atualizada com sucesso!"
+          : "Categoria criada com sucesso!";
+      },
+      error: (error) => error.message,
+    });
   }
 
   return (
@@ -87,3 +88,5 @@ export const FormCategoryProduct = ({ categoryProduct }: FormProps) => {
     </Form>
   );
 };
+
+export default FormCategoryProduct;

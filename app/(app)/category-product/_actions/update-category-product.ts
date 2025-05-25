@@ -1,8 +1,9 @@
 "use server";
+import { auth } from "@clerk/nextjs/server";
 import { CategoryProduct, Prisma } from "@prisma/client";
 import { revalidatePath } from "next/cache";
+
 import { db } from "@/app/_lib/prisma";
-import { auth } from "@clerk/nextjs/server";
 
 export const updateCategoryProduct = async (
   uuid: string,

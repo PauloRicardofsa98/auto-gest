@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Check, ChevronsUpDown } from "lucide-react";
 import { useState } from "react";
 import { Control, FieldValues, Path } from "react-hook-form";
@@ -32,7 +31,7 @@ interface InputProps<T extends FieldValues> {
   className?: string;
 }
 
-export const InputCombobox = <T extends FieldValues>({
+const InputCombobox = <T extends FieldValues>({
   control,
   form,
   name,
