@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Brand, Client, Prisma, Service } from "@prisma/client";
 import { X } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
@@ -87,11 +87,6 @@ const FormSchedule = ({ schedule, clients, services }: FormRecordProps) => {
       date: schedule ? new Date(schedule.date) : new Date(),
     },
   });
-
-  useEffect(() => {
-    form.reset();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [form, open]);
 
   const handleAddService = (service: Service) => {
     setServicesSchedule((services) => [
