@@ -1,8 +1,9 @@
 "use server";
-import { Vehicle, Prisma } from "@prisma/client";
-import { revalidatePath } from "next/cache";
-import { db } from "@/app/_lib/prisma";
 import { auth } from "@clerk/nextjs/server";
+import { Prisma, Vehicle } from "@prisma/client";
+import { revalidatePath } from "next/cache";
+
+import { db } from "@/app/_lib/prisma";
 
 export const updateVehicle = async (
   uuid: string,

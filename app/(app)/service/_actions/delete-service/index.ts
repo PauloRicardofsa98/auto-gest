@@ -1,7 +1,8 @@
 "use server";
-import { revalidatePath } from "next/cache";
-import { db } from "@/app/_lib/prisma";
 import { auth } from "@clerk/nextjs/server";
+import { revalidatePath } from "next/cache";
+
+import { db } from "@/app/_lib/prisma";
 
 export const deleteService = async (uuid: string) => {
   const { userId } = await auth();

@@ -1,8 +1,9 @@
 "use server";
-import { Service, Prisma } from "@prisma/client";
-import { revalidatePath } from "next/cache";
-import { db } from "@/app/_lib/prisma";
 import { auth } from "@clerk/nextjs/server";
+import { Prisma, Service } from "@prisma/client";
+import { revalidatePath } from "next/cache";
+
+import { db } from "@/app/_lib/prisma";
 
 export const createService = async (
   customerParams: Prisma.ServiceCreateInput,
