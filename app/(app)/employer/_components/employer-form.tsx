@@ -37,7 +37,7 @@ const FormEmployer = ({ employer }: FormProps) => {
 
   async function onSubmit(data: EmployerProps) {
     const dataFormatted: Prisma.EmployerCreateInput = {
-      name: data.name,
+      name: data.name.toUpperCase(),
       cpf: removeMask(data.cpf),
       address: data.address,
       phone: data.phone,

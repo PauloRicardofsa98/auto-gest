@@ -40,7 +40,7 @@ const FormProduct = ({ product }: FormProps) => {
 
   async function onSubmit(data: ProductProps) {
     const dataFormatted = {
-      name: data.name,
+      name: data.name.toUpperCase(),
       maximumStock: data.maximumStock,
       minimumStock: data.minimumStock,
       stock: data.stock,

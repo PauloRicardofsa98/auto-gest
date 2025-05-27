@@ -34,7 +34,7 @@ const FormService = ({ service }: FormProps) => {
 
   async function onSubmit(data: ServiceProps) {
     const dataFormatted = {
-      name: data.name,
+      name: data.name.toUpperCase(),
       price: doubleFormat(data.price),
     };
 

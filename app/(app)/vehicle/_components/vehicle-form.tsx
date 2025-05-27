@@ -39,8 +39,8 @@ const FormVehicle = ({ vehicle, clients }: FormProps) => {
 
   async function onSubmit(data: VehicleProps) {
     const dataFormatted: Prisma.VehicleCreateInput = {
-      model: data.model,
-      plate: data.plate,
+      model: data.model.toUpperCase(),
+      plate: data.plate.toUpperCase(),
       brand: data.brand,
       year: data.year ? parseInt(data.year) : null,
       color: data.color,

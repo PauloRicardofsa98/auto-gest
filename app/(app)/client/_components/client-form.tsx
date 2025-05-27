@@ -39,7 +39,7 @@ const FormClient = ({ client }: FormProps) => {
 
   async function onSubmit(data: CreateClientProps) {
     const dataFormatted: CreateClientProps = {
-      name: data.name,
+      name: data.name.toUpperCase(),
       cpfCnpj: data.cpfCnpj ? removeMask(data.cpfCnpj) : "",
       phone: data.phone,
       email: data.email,
